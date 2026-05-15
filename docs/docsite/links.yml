@@ -1,0 +1,5 @@
+---
+edit_on_github:
+  repository: virtru-corp/gps-eng
+  branch: main
+  path_prefix: dsp/ansible/collections/tructl

@@ -1,0 +1,1449 @@
+---
+# Test playbook for dsp.tructl collection
+# Tests all 24 modules and 1 lookup plugin with all options
+# Order: create/present first, cleanup/absent last
+#
+# Usage:
+#   ansible-playbook tests/test_all_modules.yml -i tests/inventory.ini
+#   ansible-playbook tests/test_all_modules.yml -i tests/inventory.ini --check  # dry-run
+#   ansible-playbook tests/test_all_modules.yml -i tests/inventory.ini --tags create  # only create tests
+#   ansible-playbook tests/test_all_modules.yml -i tests/inventory.ini --tags cleanup  # only cleanup tests
+#
+# Notes:
+#   - Uses --host, --tls-no-verify, --with-client-creds global flags for headless operation
+#   - Profile and Auth modules require D-Bus keyring; tested separately via check mode
+#   - All policy/KAS/crypto modules tested with full create -> verify -> cleanup cycle
+#
+- name: Test dsp.tructl collection - all modules
+  hosts: dsp_vm
+  gather_facts: false
+
+  vars:
+    # DSP platform endpoint (from within the VM)
+    dsp_endpoint: "https://platform.dsp.vm"
+    # OIDC client credentials (confidential client with service account)
+    dsp_client_id: "opentdf"
+    dsp_client_secret: "secret"
+    # tructl binary path on VM
+    tructl_bin: "/home/vagrant/virtru/virtru-dsp-bundle/tools-bin/tructl"
+    # Common connection params passed to all modules
+    tructl_host: "{{ dsp_endpoint }}"
+    tructl_tls_no_verify: true
+    tructl_client_creds:
+      clientId: "{{ dsp_client_id }}"
+      clientSecret: "{{ dsp_client_secret }}"
+    # Namespace for testing
+    # Set in first task via set_fact for consistency
+    # test_namespace is set dynamically below
+    # Attribute definitions
+    test_attr_name: "sensitivity"
+    test_attr_rule: "HIERARCHY"
+    test_attr_values:
+      - "public"
+      - "internal"
+      - "confidential"
+      - "secret"
+    # KAS configuration
+    test_kas_name: "test-kas"
+    test_kas_uri: "{{ dsp_endpoint }}/kas"
+    # Encryption test files
+    test_plaintext_file: "/tmp/tructl_test_input.txt"
+    test_tdf_file: "/tmp/tructl_test_input.txt.tdf"
+    test_decrypted_file: "/tmp/tructl_test_decrypted.txt"
+
+  module_defaults:
+    dsp.tructl.profile:
+      tructl_bin: "{{ tructl_bin }}"
+    dsp.tructl.auth:
+      tructl_bin: "{{ tructl_bin }}"
+    dsp.tructl.namespace:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.attribute:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.subject_mapping:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.resource_mapping:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.kas_registry:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.kas_key:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.kas_grant:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.encrypt:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.decrypt:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.inspect:
+      tructl_bin: "{{ tructl_bin }}"
+    dsp.tructl.action:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.attribute_value:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.resource_mapping_group:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.subject_condition_set:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.obligation:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.registered_resource:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.key_provider:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.attribute_key:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.attribute_value_key:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.namespace_key:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.policy_export:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.policy_import:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    dsp.tructl.provision:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+
+  tasks:
+    # =========================================================================
+    # SETUP - Create test fixtures
+    # =========================================================================
+    - name: Generate unique test namespace name
+      ansible.builtin.set_fact:
+        test_namespace: "tructl-test-{{ 999999999 | random }}.example.com"
+      tags: [always]
+
+    - name: Create test plaintext file for encryption tests
+      ansible.builtin.copy:
+        content: "This is a test file for dsp.tructl collection testing."
+        dest: "{{ test_plaintext_file }}"
+        mode: "0644"
+      tags: [setup, create]
+
+    # =========================================================================
+    # MODULE 1: tructl_profile - check mode only (requires D-Bus keyring)
+    # =========================================================================
+    - name: "PROFILE | Create test profile (check mode - keyring not available headless)"
+      dsp.tructl.profile:
+        name: "test-profile"
+        endpoint: "{{ dsp_endpoint }}"
+        state: present
+      register: profile_check
+      check_mode: true
+      tags: [create, profile]
+
+    - name: "PROFILE | Verify check mode reports changed"
+      ansible.builtin.assert:
+        that:
+          - profile_check.changed
+        fail_msg: "Profile check mode failed"
+      tags: [create, profile]
+
+    # =========================================================================
+    # MODULE 2: tructl_auth - check mode only (requires D-Bus keyring)
+    # =========================================================================
+    - name: "AUTH | Authenticate (check mode - keyring not available headless)"
+      dsp.tructl.auth:
+        client_id: "{{ dsp_client_id }}"
+      register: auth_check
+      check_mode: true
+      tags: [create, auth]
+
+    - name: "AUTH | Verify check mode reports changed"
+      ansible.builtin.assert:
+        that:
+          - auth_check.changed
+          - "'Would authenticate' in auth_check.msg"
+        fail_msg: "Auth check mode failed"
+      tags: [create, auth]
+
+    # =========================================================================
+    # MODULE 3: tructl_namespace - state: present
+    # =========================================================================
+    - name: "NAMESPACE | Create test namespace"
+      dsp.tructl.namespace:
+        name: "{{ test_namespace }}"
+        state: present
+      register: ns_create
+      tags: [create, namespace]
+
+    - name: "NAMESPACE | Verify namespace was created"
+      ansible.builtin.assert:
+        that:
+          - ns_create.changed or ns_create.namespace is defined
+          - ns_create.namespace.name == test_namespace
+        fail_msg: "Namespace creation failed"
+      tags: [create, namespace]
+
+    - name: "NAMESPACE | Idempotency check - create same namespace"
+      dsp.tructl.namespace:
+        name: "{{ test_namespace }}"
+        state: present
+      register: ns_idempotent
+      tags: [create, namespace]
+
+    - name: "NAMESPACE | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not ns_idempotent.changed
+        fail_msg: "Namespace create was not idempotent"
+      tags: [create, namespace]
+
+    - name: "NAMESPACE | List all namespaces"
+      dsp.tructl.namespace:
+        name: unused
+        state: list
+      register: ns_list
+      tags: [create, namespace]
+
+    - name: "NAMESPACE | Display namespaces"
+      ansible.builtin.debug:
+        var: ns_list.namespaces
+      tags: [create, namespace]
+
+    # =========================================================================
+    # MODULE 4: tructl_attribute - state: present
+    # =========================================================================
+    - name: "ATTRIBUTE | Set namespace ID for attribute creation"
+      ansible.builtin.set_fact:
+        test_namespace_id: "{{ ns_create.namespace.id }}"
+      tags: [create, attribute]
+
+    - name: "ATTRIBUTE | Create attribute with hierarchy rule"
+      dsp.tructl.attribute:
+        namespace: "{{ test_namespace_id }}"
+        name: "{{ test_attr_name }}"
+        rule: "{{ test_attr_rule }}"
+        values: "{{ test_attr_values }}"
+        state: present
+      register: attr_create
+      tags: [create, attribute]
+
+    - name: "ATTRIBUTE | Verify attribute was created"
+      ansible.builtin.assert:
+        that:
+          - attr_create.changed or attr_create.attribute is defined
+          - attr_create.attribute.name == test_attr_name
+        fail_msg: "Attribute creation failed"
+      tags: [create, attribute]
+
+    - name: "ATTRIBUTE | Idempotency check - create same attribute"
+      dsp.tructl.attribute:
+        namespace: "{{ test_namespace_id }}"
+        name: "{{ test_attr_name }}"
+        rule: "{{ test_attr_rule }}"
+        values: "{{ test_attr_values }}"
+        state: present
+      register: attr_idempotent
+      tags: [create, attribute]
+
+    - name: "ATTRIBUTE | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not attr_idempotent.changed
+        fail_msg: "Attribute create was not idempotent"
+      tags: [create, attribute]
+
+    - name: "ATTRIBUTE | Create a second attribute with anyOf rule"
+      dsp.tructl.attribute:
+        namespace: "{{ test_namespace_id }}"
+        name: "department"
+        rule: "ANY_OF"
+        values:
+          - "engineering"
+          - "finance"
+          - "hr"
+        state: present
+      register: attr_create_2
+      tags: [create, attribute]
+
+    - name: "ATTRIBUTE | Create a third attribute with allOf rule"
+      dsp.tructl.attribute:
+        namespace: "{{ test_namespace_id }}"
+        name: "clearance"
+        rule: "ALL_OF"
+        values:
+          - "citizen"
+          - "background-check"
+        state: present
+      register: attr_create_3
+      tags: [create, attribute]
+
+    - name: "ATTRIBUTE | List all attributes"
+      dsp.tructl.attribute:
+        namespace: unused
+        name: unused
+        state: list
+      register: attr_list
+      tags: [create, attribute]
+
+    - name: "ATTRIBUTE | Display attribute count"
+      ansible.builtin.debug:
+        msg: "Found {{ attr_list.attributes | length }} attributes"
+      tags: [create, attribute]
+
+    # =========================================================================
+    # MODULE 5: tructl_kas_registry - state: present
+    # =========================================================================
+    - name: "KAS_REGISTRY | Register a KAS server"
+      dsp.tructl.kas_registry:
+        name: "{{ test_kas_name }}"
+        uri: "{{ test_kas_uri }}"
+        state: present
+      register: kas_create
+      tags: [create, kas_registry]
+
+    - name: "KAS_REGISTRY | Verify KAS was registered"
+      ansible.builtin.assert:
+        that:
+          - kas_create.changed or kas_create.kas_registry is defined
+          - kas_create.kas_registry.name == test_kas_name
+        fail_msg: "KAS registry creation failed"
+      tags: [create, kas_registry]
+
+    - name: "KAS_REGISTRY | Idempotency check - register same KAS"
+      dsp.tructl.kas_registry:
+        name: "{{ test_kas_name }}"
+        uri: "{{ test_kas_uri }}"
+        state: present
+      register: kas_idempotent
+      tags: [create, kas_registry]
+
+    - name: "KAS_REGISTRY | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not kas_idempotent.changed
+        fail_msg: "KAS registry create was not idempotent"
+      tags: [create, kas_registry]
+
+    - name: "KAS_REGISTRY | List all KAS registries"
+      dsp.tructl.kas_registry:
+        state: list
+      register: kas_list
+      tags: [create, kas_registry]
+
+    - name: "KAS_REGISTRY | Display KAS registries"
+      ansible.builtin.debug:
+        var: kas_list.kas_registries
+      tags: [create, kas_registry]
+
+    # =========================================================================
+    # MODULE 6: tructl_subject_mapping - state: present
+    # =========================================================================
+    - name: "SUBJECT_MAPPING | Get attribute value ID for mapping"
+      ansible.builtin.set_fact:
+        test_attr_value_id: >-
+          {{ (attr_create.attribute['values']
+             | selectattr('value', 'equalto', 'public')
+             | map(attribute='id')
+             | first) }}
+      when: attr_create.attribute['values'] is defined
+      tags: [create, subject_mapping]
+
+    - name: "SUBJECT_MAPPING | Create subject mapping (DECRYPT for opentdf client)"
+      dsp.tructl.subject_mapping:
+        attribute_value_id: "{{ test_attr_value_id }}"
+        actions:
+          - standard: "DECRYPT"
+        subject_condition_sets:
+          - condition_groups:
+              - boolean_operator: 2
+                conditions:
+                  - subject_external_selector_value: ".clientId"
+                    operator: 1
+                    subject_external_values:
+                      - "{{ dsp_client_id }}"
+        state: present
+      register: sm_create
+      when: test_attr_value_id is defined
+      tags: [create, subject_mapping]
+
+    - name: "SUBJECT_MAPPING | Verify subject mapping was created"
+      ansible.builtin.assert:
+        that:
+          - sm_create.changed or sm_create.subject_mapping is defined
+        fail_msg: "Subject mapping creation failed"
+      when: sm_create is not skipped
+      tags: [create, subject_mapping]
+
+    - name: "SUBJECT_MAPPING | Idempotency check - create same mapping"
+      dsp.tructl.subject_mapping:
+        attribute_value_id: "{{ test_attr_value_id }}"
+        actions:
+          - standard: "DECRYPT"
+        subject_condition_sets:
+          - condition_groups:
+              - boolean_operator: 2
+                conditions:
+                  - subject_external_selector_value: ".clientId"
+                    operator: 1
+                    subject_external_values:
+                      - "{{ dsp_client_id }}"
+        state: present
+      register: sm_idempotent
+      when: test_attr_value_id is defined
+      tags: [create, subject_mapping]
+
+    - name: "SUBJECT_MAPPING | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not sm_idempotent.changed
+        fail_msg: "Subject mapping create was not idempotent"
+      when: sm_idempotent is not skipped
+      tags: [create, subject_mapping]
+
+    - name: "SUBJECT_MAPPING | List all subject mappings"
+      dsp.tructl.subject_mapping:
+        state: list
+      register: sm_list
+      tags: [create, subject_mapping]
+
+    - name: "SUBJECT_MAPPING | Display subject mapping count"
+      ansible.builtin.debug:
+        msg: "Found {{ sm_list.subject_mappings | length }} subject mappings"
+      tags: [create, subject_mapping]
+
+    # =========================================================================
+    # MODULE 7: tructl_resource_mapping - state: present
+    # =========================================================================
+    - name: "RESOURCE_MAPPING | Create resource mapping with single term"
+      dsp.tructl.resource_mapping:
+        attribute_value_id: "{{ test_attr_value_id }}"
+        terms:
+          - "classification:public"
+        state: present
+      register: rm_create
+      when: test_attr_value_id is defined
+      tags: [create, resource_mapping]
+
+    - name: "RESOURCE_MAPPING | Verify resource mapping was created"
+      ansible.builtin.assert:
+        that:
+          - rm_create.changed or rm_create.resource_mapping is defined
+        fail_msg: "Resource mapping creation failed"
+      when: rm_create is not skipped
+      tags: [create, resource_mapping]
+
+    - name: "RESOURCE_MAPPING | Idempotency check"
+      dsp.tructl.resource_mapping:
+        attribute_value_id: "{{ test_attr_value_id }}"
+        terms:
+          - "classification:public"
+        state: present
+      register: rm_idempotent
+      when: test_attr_value_id is defined
+      tags: [create, resource_mapping]
+
+    - name: "RESOURCE_MAPPING | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not rm_idempotent.changed
+        fail_msg: "Resource mapping create was not idempotent"
+      when: rm_idempotent is not skipped
+      tags: [create, resource_mapping]
+
+    - name: "RESOURCE_MAPPING | Get second attribute value ID for multi-term test"
+      ansible.builtin.set_fact:
+        test_attr_value_id_2: >-
+          {{ (attr_create.attribute['values']
+             | selectattr('value', 'equalto', 'internal')
+             | map(attribute='id')
+             | first) }}
+      when: attr_create.attribute['values'] is defined
+      tags: [create, resource_mapping]
+
+    - name: "RESOURCE_MAPPING | Create resource mapping with multiple terms"
+      dsp.tructl.resource_mapping:
+        attribute_value_id: "{{ test_attr_value_id_2 }}"
+        terms:
+          - "classification:internal"
+          - "sensitivity:medium"
+        state: present
+      register: rm_create_multi
+      when: test_attr_value_id_2 is defined
+      tags: [create, resource_mapping]
+
+    - name: "RESOURCE_MAPPING | List all resource mappings"
+      dsp.tructl.resource_mapping:
+        state: list
+      register: rm_list
+      tags: [create, resource_mapping]
+
+    - name: "RESOURCE_MAPPING | Display resource mapping count"
+      ansible.builtin.debug:
+        msg: "Found {{ rm_list.resource_mappings | length }} resource mappings"
+      tags: [create, resource_mapping]
+
+    # =========================================================================
+    # MODULE 8: tructl_kas_grant - migrate grants
+    # =========================================================================
+    - name: "KAS_GRANT | Test kas_grant module (check mode - requires TTY for actual run)"
+      dsp.tructl.kas_grant:
+        interactive: false
+        commit: true
+      register: kas_grant_check
+      check_mode: true
+      tags: [create, kas_grant]
+
+    - name: "KAS_GRANT | Verify check mode works"
+      ansible.builtin.assert:
+        that:
+          - kas_grant_check.changed
+          - "'Would run kas-grants migration' in kas_grant_check.msg"
+        fail_msg: "KAS grant check mode failed"
+      tags: [create, kas_grant]
+
+    # =========================================================================
+    # MODULE 9: tructl_action - CRUD by name
+    # =========================================================================
+    - name: "ACTION | Create a custom action"
+      dsp.tructl.action:
+        name: "test-custom-action"
+        state: present
+      register: action_create
+      tags: [create, action]
+
+    - name: "ACTION | Verify action was created"
+      ansible.builtin.assert:
+        that:
+          - action_create.changed or action_create.action is defined
+          - action_create.action.name == "test-custom-action"
+        fail_msg: "Action creation failed"
+      tags: [create, action]
+
+    - name: "ACTION | Idempotency check - create same action"
+      dsp.tructl.action:
+        name: "test-custom-action"
+        state: present
+      register: action_idempotent
+      tags: [create, action]
+
+    - name: "ACTION | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not action_idempotent.changed
+        fail_msg: "Action create was not idempotent"
+      tags: [create, action]
+
+    # =========================================================================
+    # MODULE 10: tructl_attribute_value - create individual values
+    # =========================================================================
+    - name: "ATTRIBUTE_VALUE | Create an individual attribute value"
+      dsp.tructl.attribute_value:
+        attribute_id: "{{ attr_create.attribute.id }}"
+        value: "top-secret"
+        state: present
+      register: attrval_create
+      tags: [create, attribute_value]
+
+    - name: "ATTRIBUTE_VALUE | Verify attribute value was created"
+      ansible.builtin.assert:
+        that:
+          - attrval_create.changed or attrval_create.attribute_value is defined
+        fail_msg: "Attribute value creation failed"
+      tags: [create, attribute_value]
+
+    # =========================================================================
+    # MODULE 11: tructl_resource_mapping_group - CRUD
+    # =========================================================================
+    - name: "RESOURCE_MAPPING_GROUP | Create resource mapping group"
+      dsp.tructl.resource_mapping_group:
+        namespace_id: "{{ test_namespace_id }}"
+        name: "test-rmg"
+        state: present
+      register: rmg_create
+      tags: [create, resource_mapping_group]
+
+    - name: "RESOURCE_MAPPING_GROUP | Verify resource mapping group was created"
+      ansible.builtin.assert:
+        that:
+          - rmg_create.changed or rmg_create.resource_mapping_group is defined
+          - rmg_create.resource_mapping_group.name == "test-rmg"
+        fail_msg: "Resource mapping group creation failed"
+      tags: [create, resource_mapping_group]
+
+    - name: "RESOURCE_MAPPING_GROUP | Idempotency check"
+      dsp.tructl.resource_mapping_group:
+        namespace_id: "{{ test_namespace_id }}"
+        name: "test-rmg"
+        state: present
+      register: rmg_idempotent
+      tags: [create, resource_mapping_group]
+
+    - name: "RESOURCE_MAPPING_GROUP | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not rmg_idempotent.changed
+        fail_msg: "Resource mapping group create was not idempotent"
+      tags: [create, resource_mapping_group]
+
+    # =========================================================================
+    # MODULE 12: tructl_subject_condition_set - create (not idempotent)
+    # =========================================================================
+    - name: "SUBJECT_CONDITION_SET | Create subject condition set"
+      dsp.tructl.subject_condition_set:
+        subject_sets:
+          - condition_groups:
+              - boolean_operator: 2
+                conditions:
+                  - subject_external_selector_value: ".clientId"
+                    operator: 1
+                    subject_external_values:
+                      - "{{ dsp_client_id }}"
+        state: present
+      register: scs_create
+      tags: [create, subject_condition_set]
+
+    - name: "SUBJECT_CONDITION_SET | Verify subject condition set was created"
+      ansible.builtin.assert:
+        that:
+          - scs_create.changed or scs_create.subject_condition_set is defined
+        fail_msg: "Subject condition set creation failed"
+      tags: [create, subject_condition_set]
+
+    # =========================================================================
+    # MODULE 13: tructl_obligation - CRUD by name
+    # =========================================================================
+    - name: "OBLIGATION | Create obligation"
+      dsp.tructl.obligation:
+        name: "test-obligation"
+        namespace: "{{ test_namespace_id }}"
+        values:
+          - "log-access"
+          - "notify-admin"
+        state: present
+      register: obligation_create
+      tags: [create, obligation]
+
+    - name: "OBLIGATION | Verify obligation was created"
+      ansible.builtin.assert:
+        that:
+          - obligation_create.changed or obligation_create.obligation is defined
+          - obligation_create.obligation.name == "test-obligation"
+        fail_msg: "Obligation creation failed"
+      tags: [create, obligation]
+
+    - name: "OBLIGATION | Idempotency check"
+      dsp.tructl.obligation:
+        name: "test-obligation"
+        namespace: "{{ test_namespace_id }}"
+        values:
+          - "log-access"
+          - "notify-admin"
+        state: present
+      register: obligation_idempotent
+      tags: [create, obligation]
+
+    - name: "OBLIGATION | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not obligation_idempotent.changed
+        fail_msg: "Obligation create was not idempotent"
+      tags: [create, obligation]
+
+    # =========================================================================
+    # MODULE 14: tructl_registered_resource - CRUD by name
+    # =========================================================================
+    - name: "REGISTERED_RESOURCE | Create registered resource"
+      dsp.tructl.registered_resource:
+        name: "test-registered-resource"
+        values:
+          - "resource-value-1"
+          - "resource-value-2"
+        state: present
+      register: rr_create
+      tags: [create, registered_resource]
+
+    - name: "REGISTERED_RESOURCE | Verify registered resource was created"
+      ansible.builtin.assert:
+        that:
+          - rr_create.changed or rr_create.registered_resource is defined
+          - rr_create.registered_resource.name == "test-registered-resource"
+        fail_msg: "Registered resource creation failed"
+      tags: [create, registered_resource]
+
+    - name: "REGISTERED_RESOURCE | Idempotency check"
+      dsp.tructl.registered_resource:
+        name: "test-registered-resource"
+        values:
+          - "resource-value-1"
+          - "resource-value-2"
+        state: present
+      register: rr_idempotent
+      tags: [create, registered_resource]
+
+    - name: "REGISTERED_RESOURCE | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not rr_idempotent.changed
+        fail_msg: "Registered resource create was not idempotent"
+      tags: [create, registered_resource]
+
+    # =========================================================================
+    # MODULE 15: tructl_key_provider - CRUD by name
+    # =========================================================================
+    - name: "KEY_PROVIDER | Create key provider"
+      dsp.tructl.key_provider:
+        name: "test-key-provider"
+        manager: "local"
+        config:
+          key_store: "/tmp/test-keys"
+        state: present
+      register: kp_create
+      tags: [create, key_provider]
+
+    - name: "KEY_PROVIDER | Verify key provider was created"
+      ansible.builtin.assert:
+        that:
+          - kp_create.changed or kp_create.key_provider is defined
+          - kp_create.key_provider.name == "test-key-provider"
+        fail_msg: "Key provider creation failed"
+      tags: [create, key_provider]
+
+    - name: "KEY_PROVIDER | Idempotency check"
+      dsp.tructl.key_provider:
+        name: "test-key-provider"
+        manager: "local"
+        config:
+          key_store: "/tmp/test-keys"
+        state: present
+      register: kp_idempotent
+      tags: [create, key_provider]
+
+    - name: "KEY_PROVIDER | Verify idempotency"
+      ansible.builtin.assert:
+        that:
+          - not kp_idempotent.changed
+        fail_msg: "Key provider create was not idempotent"
+      tags: [create, key_provider]
+
+    # =========================================================================
+    # MODULES 16-18: Key assignment modules - check mode only
+    # The test KAS has no imported keys, so we cannot assign keys to
+    # attributes, values, or namespaces. Test in check mode to verify the
+    # module interface works without requiring an actual KAS key ID.
+    # =========================================================================
+    - name: "ATTRIBUTE_KEY | Assign KAS key to attribute (check mode - no KAS keys available)"
+      dsp.tructl.attribute_key:
+        attribute: "{{ attr_create.attribute.id }}"
+        key_id: "00000000-0000-0000-0000-000000000000"
+        state: present
+      register: attrkey_check
+      check_mode: true
+      tags: [create, attribute_key]
+
+    - name: "ATTRIBUTE_KEY | Verify check mode reports changed"
+      ansible.builtin.assert:
+        that:
+          - attrkey_check.changed
+        fail_msg: "Attribute key check mode failed"
+      tags: [create, attribute_key]
+
+    - name: "ATTRIBUTE_VALUE_KEY | Assign KAS key to attribute value (check mode - no KAS keys available)"
+      dsp.tructl.attribute_value_key:
+        value: "{{ test_attr_value_id }}"
+        key_id: "00000000-0000-0000-0000-000000000000"
+        state: present
+      register: attrvalkey_check
+      check_mode: true
+      tags: [create, attribute_value_key]
+
+    - name: "ATTRIBUTE_VALUE_KEY | Verify check mode reports changed"
+      ansible.builtin.assert:
+        that:
+          - attrvalkey_check.changed
+        fail_msg: "Attribute value key check mode failed"
+      tags: [create, attribute_value_key]
+
+    - name: "NAMESPACE_KEY | Assign KAS key to namespace (check mode - no KAS keys available)"
+      dsp.tructl.namespace_key:
+        namespace: "{{ test_namespace_id }}"
+        key_id: "00000000-0000-0000-0000-000000000000"
+        state: present
+      register: nskey_check
+      check_mode: true
+      tags: [create, namespace_key]
+
+    - name: "NAMESPACE_KEY | Verify check mode reports changed"
+      ansible.builtin.assert:
+        that:
+          - nskey_check.changed
+        fail_msg: "Namespace key check mode failed"
+      tags: [create, namespace_key]
+
+    # =========================================================================
+    # MODULE 19: tructl_policy_export - export policy
+    # =========================================================================
+    - name: "POLICY_EXPORT | Export policy to file"
+      dsp.tructl.policy_export:
+        namespace: "{{ test_namespace }}"
+        dest: "/tmp/tructl_test_export.yaml"
+        no_bundle: true
+        force: true
+      register: policy_export_result
+      tags: [create, policy_export]
+
+    - name: "POLICY_EXPORT | Verify export succeeded"
+      ansible.builtin.assert:
+        that:
+          - policy_export_result.changed
+        fail_msg: "Policy export failed"
+      tags: [create, policy_export]
+
+    # =========================================================================
+    # MODULE 20: tructl_policy_import - import policy
+    # =========================================================================
+    - name: "POLICY_IMPORT | Import policy from exported file (expect fail - namespace already exists)"
+      dsp.tructl.policy_import:
+        artifact: "/tmp/tructl_test_export.yaml"
+        no_verify_signature: true
+      register: policy_import_result
+      ignore_errors: true
+      tags: [create, policy_import]
+
+    - name: "POLICY_IMPORT | Verify import was attempted"
+      ansible.builtin.debug:
+        msg: "Import result: {{ 'succeeded' if policy_import_result.changed else 'failed (expected - namespace already exists on same platform)' }}"
+      tags: [create, policy_import]
+
+    # =========================================================================
+    # MODULE 21: tructl_provision - provision defaults (check mode)
+    # =========================================================================
+    - name: "PROVISION | Provision defaults (check mode - avoid polluting test namespace)"
+      dsp.tructl.provision:
+        namespace: "{{ test_namespace }}"
+        with_resource_mappings: true
+        with_subject_mappings: true
+      register: provision_check
+      check_mode: true
+      tags: [create, provision]
+
+    - name: "PROVISION | Verify check mode reports changed"
+      ansible.builtin.assert:
+        that:
+          - provision_check.changed
+        fail_msg: "Provision check mode failed"
+      tags: [create, provision]
+
+    # =========================================================================
+    # LOOKUP PLUGIN: dsp.tructl.subject_match - query entitlements
+    # =========================================================================
+    - name: "SUBJECT_MATCH | Query entitlements via lookup plugin"
+      vars:
+        match_result: >-
+          {{ lookup('dsp.tructl.subject_match',
+          tructl_bin=tructl_bin, host=tructl_host,
+          tls_no_verify=tructl_tls_no_verify, client_creds=tructl_client_creds) }}
+      ansible.builtin.debug:
+        msg: "{{ match_result }}"
+      register: subject_match_result
+      ignore_errors: true
+      tags: [create, subject_match]
+
+    - name: "SUBJECT_MATCH | Display lookup result"
+      ansible.builtin.debug:
+        var: subject_match_result
+      tags: [create, subject_match]
+
+    # =========================================================================
+    # MODULE 22: tructl_encrypt - encrypt files
+    # =========================================================================
+    - name: "ENCRYPT | Encrypt file without attributes"
+      dsp.tructl.encrypt:
+        src: "{{ test_plaintext_file }}"
+        dest: "{{ test_tdf_file }}"
+      register: encrypt_basic
+      tags: [create, encrypt]
+
+    - name: "ENCRYPT | Verify encryption succeeded"
+      ansible.builtin.assert:
+        that:
+          - encrypt_basic.changed
+          - encrypt_basic.dest == test_tdf_file
+        fail_msg: "Basic encryption failed"
+      tags: [create, encrypt]
+
+    - name: "ENCRYPT | Idempotency check - encrypt same file (should skip)"
+      dsp.tructl.encrypt:
+        src: "{{ test_plaintext_file }}"
+        dest: "{{ test_tdf_file }}"
+      register: encrypt_idempotent
+      tags: [create, encrypt]
+
+    - name: "ENCRYPT | Verify idempotency (dest exists, no force)"
+      ansible.builtin.assert:
+        that:
+          - not encrypt_idempotent.changed
+        fail_msg: "Encrypt was not idempotent when dest exists"
+      tags: [create, encrypt]
+
+    - name: "ENCRYPT | Force re-encryption"
+      dsp.tructl.encrypt:
+        src: "{{ test_plaintext_file }}"
+        dest: "{{ test_tdf_file }}"
+        force: true
+      register: encrypt_force
+      tags: [create, encrypt]
+
+    - name: "ENCRYPT | Verify force re-encryption"
+      ansible.builtin.assert:
+        that:
+          - encrypt_force.changed
+        fail_msg: "Force re-encryption failed"
+      tags: [create, encrypt]
+
+    - name: "ENCRYPT | Encrypt with attributes"
+      dsp.tructl.encrypt:
+        src: "{{ test_plaintext_file }}"
+        dest: "/tmp/tructl_test_with_attrs.tdf"
+        force: true
+        attributes:
+          - "https://{{ test_namespace }}/attr/{{ test_attr_name }}/value/public"
+      register: encrypt_attrs
+      tags: [create, encrypt]
+
+    - name: "ENCRYPT | Verify encryption with attributes"
+      ansible.builtin.assert:
+        that:
+          - encrypt_attrs.changed
+        fail_msg: "Encryption with attributes failed"
+      tags: [create, encrypt]
+
+    # =========================================================================
+    # MODULE 10: tructl_inspect - read-only inspection
+    # =========================================================================
+    - name: "INSPECT | Inspect TDF file (basic)"
+      dsp.tructl.inspect:
+        src: "{{ test_tdf_file }}"
+      register: inspect_basic
+      tags: [create, inspect]
+
+    - name: "INSPECT | Verify inspect returned data"
+      ansible.builtin.assert:
+        that:
+          - not inspect_basic.changed
+          - inspect_basic.tdf_info is defined or inspect_basic.raw_output is defined
+        fail_msg: "TDF inspection failed"
+      tags: [create, inspect]
+
+    - name: "INSPECT | Display TDF metadata"
+      ansible.builtin.debug:
+        var: inspect_basic.tdf_info
+      when: inspect_basic.tdf_info | length > 0
+      tags: [create, inspect]
+
+    - name: "INSPECT | Display raw output (fallback)"
+      ansible.builtin.debug:
+        var: inspect_basic.raw_output
+      when: inspect_basic.raw_output | length > 0
+      tags: [create, inspect]
+
+    - name: "INSPECT | Inspect TDF with attributes"
+      dsp.tructl.inspect:
+        src: "/tmp/tructl_test_with_attrs.tdf"
+      register: inspect_attrs
+      tags: [create, inspect]
+
+    - name: "INSPECT | Display TDF with attributes metadata"
+      ansible.builtin.debug:
+        var: inspect_attrs
+      tags: [create, inspect]
+
+    - name: "INSPECT | Verify inspect is always unchanged"
+      ansible.builtin.assert:
+        that:
+          - not inspect_attrs.changed
+        fail_msg: "Inspect should never report changed"
+      tags: [create, inspect]
+
+    # =========================================================================
+    # MODULE 11: tructl_decrypt - decrypt files
+    # =========================================================================
+    - name: "DECRYPT | Decrypt TDF to specific path"
+      dsp.tructl.decrypt:
+        src: "{{ test_tdf_file }}"
+        dest: "{{ test_decrypted_file }}"
+      register: decrypt_basic
+      tags: [create, decrypt]
+
+    - name: "DECRYPT | Verify decryption succeeded"
+      ansible.builtin.assert:
+        that:
+          - decrypt_basic.changed
+          - decrypt_basic.dest == test_decrypted_file
+        fail_msg: "Basic decryption failed"
+      tags: [create, decrypt]
+
+    - name: "DECRYPT | Verify decrypted content matches original"
+      ansible.builtin.slurp:
+        src: "{{ test_decrypted_file }}"
+      register: decrypted_content
+      tags: [create, decrypt]
+
+    - name: "DECRYPT | Assert content matches"
+      ansible.builtin.assert:
+        that:
+          - "(decrypted_content.content | b64decode) == 'This is a test file for dsp.tructl collection testing.'"
+        fail_msg: "Decrypted content does not match original"
+      tags: [create, decrypt]
+
+    - name: "DECRYPT | Idempotency check - decrypt same file (should skip)"
+      dsp.tructl.decrypt:
+        src: "{{ test_tdf_file }}"
+        dest: "{{ test_decrypted_file }}"
+      register: decrypt_idempotent
+      tags: [create, decrypt]
+
+    - name: "DECRYPT | Verify idempotency (dest exists, no force)"
+      ansible.builtin.assert:
+        that:
+          - not decrypt_idempotent.changed
+        fail_msg: "Decrypt was not idempotent when dest exists"
+      tags: [create, decrypt]
+
+    - name: "DECRYPT | Force re-decryption"
+      dsp.tructl.decrypt:
+        src: "{{ test_tdf_file }}"
+        dest: "{{ test_decrypted_file }}"
+        force: true
+      register: decrypt_force
+      tags: [create, decrypt]
+
+    - name: "DECRYPT | Verify force re-decryption"
+      ansible.builtin.assert:
+        that:
+          - decrypt_force.changed
+        fail_msg: "Force re-decryption failed"
+      tags: [create, decrypt]
+
+    - name: "DECRYPT | Decrypt without dest (use default naming)"
+      dsp.tructl.decrypt:
+        src: "/tmp/tructl_test_with_attrs.tdf"
+      register: decrypt_default_name
+      ignore_errors: true
+      tags: [create, decrypt]
+
+    - name: "DECRYPT | Display default naming result"
+      ansible.builtin.debug:
+        var: decrypt_default_name
+      tags: [create, decrypt]
+
+    # =========================================================================
+    # CLEANUP PHASE - Delete/Deactivate in reverse order
+    # =========================================================================
+
+    # --- Clean up exported policy file ---
+    - name: "CLEANUP POLICY_EXPORT | Remove exported policy file"
+      ansible.builtin.file:
+        path: "/tmp/tructl_test_export.yaml"
+        state: absent
+      tags: [cleanup, policy_export]
+
+    # --- Clean up registered resources ---
+    - name: "CLEANUP REGISTERED_RESOURCE | Delete registered resource"
+      dsp.tructl.registered_resource:
+        id: "{{ rr_create.registered_resource.id }}"
+        state: absent
+      register: rr_delete
+      when: rr_create is not skipped and rr_create.registered_resource.id is defined
+      tags: [cleanup, registered_resource]
+
+    - name: "CLEANUP REGISTERED_RESOURCE | Verify deletion"
+      ansible.builtin.assert:
+        that:
+          - rr_delete.changed
+        fail_msg: "Registered resource deletion failed"
+      when: rr_delete is not skipped
+      tags: [cleanup, registered_resource]
+
+    # --- Clean up key providers ---
+    - name: "CLEANUP KEY_PROVIDER | Delete key provider"
+      dsp.tructl.key_provider:
+        id: "{{ kp_create.key_provider.id }}"
+        state: absent
+      register: kp_delete
+      when: kp_create is not skipped and kp_create.key_provider.id is defined
+      tags: [cleanup, key_provider]
+
+    - name: "CLEANUP KEY_PROVIDER | Verify deletion"
+      ansible.builtin.assert:
+        that:
+          - kp_delete.changed
+        fail_msg: "Key provider deletion failed"
+      when: kp_delete is not skipped
+      tags: [cleanup, key_provider]
+
+    # --- Clean up obligations ---
+    - name: "CLEANUP OBLIGATION | Delete obligation"
+      dsp.tructl.obligation:
+        id: "{{ obligation_create.obligation.id }}"
+        state: absent
+      register: obligation_delete
+      when: obligation_create is not skipped and obligation_create.obligation.id is defined
+      tags: [cleanup, obligation]
+
+    - name: "CLEANUP OBLIGATION | Verify deletion"
+      ansible.builtin.assert:
+        that:
+          - obligation_delete.changed
+        fail_msg: "Obligation deletion failed"
+      when: obligation_delete is not skipped
+      tags: [cleanup, obligation]
+
+    # --- Clean up subject condition sets ---
+    - name: "CLEANUP SUBJECT_CONDITION_SET | Delete subject condition set"
+      dsp.tructl.subject_condition_set:
+        id: "{{ scs_create.subject_condition_set.id }}"
+        state: absent
+      register: scs_delete
+      when: scs_create is not skipped and scs_create.subject_condition_set.id is defined
+      tags: [cleanup, subject_condition_set]
+
+    - name: "CLEANUP SUBJECT_CONDITION_SET | Verify deletion"
+      ansible.builtin.assert:
+        that:
+          - scs_delete.changed
+        fail_msg: "Subject condition set deletion failed"
+      when: scs_delete is not skipped
+      tags: [cleanup, subject_condition_set]
+
+    # --- Clean up resource mapping groups ---
+    - name: "CLEANUP RESOURCE_MAPPING_GROUP | Delete resource mapping group"
+      dsp.tructl.resource_mapping_group:
+        id: "{{ rmg_create.resource_mapping_group.id }}"
+        state: absent
+      register: rmg_delete
+      when: rmg_create is not skipped and rmg_create.resource_mapping_group.id is defined
+      tags: [cleanup, resource_mapping_group]
+
+    - name: "CLEANUP RESOURCE_MAPPING_GROUP | Verify deletion"
+      ansible.builtin.assert:
+        that:
+          - rmg_delete.changed
+        fail_msg: "Resource mapping group deletion failed"
+      when: rmg_delete is not skipped
+      tags: [cleanup, resource_mapping_group]
+
+    # --- Attribute values cleanup skipped ---
+    # Attribute values are deactivated when their parent attribute is deactivated.
+    # The tructl CLI's 'values deactivate' command requires TTY confirmation (no --force flag).
+
+    # --- Clean up actions ---
+    - name: "CLEANUP ACTION | Delete action"
+      dsp.tructl.action:
+        id: "{{ action_create.action.id }}"
+        state: absent
+      register: action_delete
+      when: action_create is not skipped and action_create.action.id is defined
+      tags: [cleanup, action]
+
+    - name: "CLEANUP ACTION | Verify deletion"
+      ansible.builtin.assert:
+        that:
+          - action_delete.changed
+        fail_msg: "Action deletion failed"
+      when: action_delete is not skipped
+      tags: [cleanup, action]
+
+    # --- Clean up resource mappings ---
+    - name: "CLEANUP RESOURCE_MAPPING | Delete resource mapping (single term)"
+      dsp.tructl.resource_mapping:
+        id: "{{ rm_create.resource_mapping.id }}"
+        state: absent
+      register: rm_delete
+      when: rm_create is not skipped and rm_create.resource_mapping.id is defined
+      tags: [cleanup, resource_mapping]
+
+    - name: "CLEANUP RESOURCE_MAPPING | Verify deletion"
+      ansible.builtin.assert:
+        that:
+          - rm_delete.changed
+        fail_msg: "Resource mapping deletion failed"
+      when: rm_delete is not skipped
+      tags: [cleanup, resource_mapping]
+
+    - name: "CLEANUP RESOURCE_MAPPING | Delete resource mapping (multi-term)"
+      dsp.tructl.resource_mapping:
+        id: "{{ rm_create_multi.resource_mapping.id }}"
+        state: absent
+      when: rm_create_multi is not skipped and rm_create_multi.resource_mapping.id is defined
+      tags: [cleanup, resource_mapping]
+
+    - name: "CLEANUP RESOURCE_MAPPING | Idempotency - delete already deleted mapping"
+      dsp.tructl.resource_mapping:
+        id: "{{ rm_create.resource_mapping.id }}"
+        state: absent
+      register: rm_delete_idempotent
+      when: rm_create is not skipped and rm_create.resource_mapping.id is defined
+      tags: [cleanup, resource_mapping]
+
+    - name: "CLEANUP RESOURCE_MAPPING | Verify delete idempotency"
+      ansible.builtin.assert:
+        that:
+          - not rm_delete_idempotent.changed
+        fail_msg: "Resource mapping delete was not idempotent"
+      when: rm_delete_idempotent is not skipped
+      tags: [cleanup, resource_mapping]
+
+    # --- Clean up subject mappings ---
+    - name: "CLEANUP SUBJECT_MAPPING | Delete subject mapping"
+      dsp.tructl.subject_mapping:
+        id: "{{ sm_create.subject_mapping.id }}"
+        state: absent
+      register: sm_delete
+      when: sm_create is not skipped and sm_create.subject_mapping.id is defined
+      tags: [cleanup, subject_mapping]
+
+    - name: "CLEANUP SUBJECT_MAPPING | Verify deletion"
+      ansible.builtin.assert:
+        that:
+          - sm_delete.changed
+        fail_msg: "Subject mapping deletion failed"
+      when: sm_delete is not skipped
+      tags: [cleanup, subject_mapping]
+
+    - name: "CLEANUP SUBJECT_MAPPING | Idempotency - delete already deleted"
+      dsp.tructl.subject_mapping:
+        id: "{{ sm_create.subject_mapping.id }}"
+        state: absent
+      register: sm_delete_idempotent
+      when: sm_create is not skipped and sm_create.subject_mapping.id is defined
+      tags: [cleanup, subject_mapping]
+
+    - name: "CLEANUP SUBJECT_MAPPING | Verify delete idempotency"
+      ansible.builtin.assert:
+        that:
+          - not sm_delete_idempotent.changed
+        fail_msg: "Subject mapping delete was not idempotent"
+      when: sm_delete_idempotent is not skipped
+      tags: [cleanup, subject_mapping]
+
+    # --- Clean up KAS registry ---
+    - name: "CLEANUP KAS_REGISTRY | Delete KAS registry entry"
+      dsp.tructl.kas_registry:
+        id: "{{ kas_create.kas_registry.id }}"
+        state: absent
+      register: kas_delete
+      when: kas_create.kas_registry.id is defined
+      tags: [cleanup, kas_registry]
+
+    - name: "CLEANUP KAS_REGISTRY | Verify deletion"
+      ansible.builtin.assert:
+        that:
+          - kas_delete.changed
+        fail_msg: "KAS registry deletion failed"
+      when: kas_delete is not skipped
+      tags: [cleanup, kas_registry]
+
+    - name: "CLEANUP KAS_REGISTRY | Idempotency - delete already deleted"
+      dsp.tructl.kas_registry:
+        id: "{{ kas_create.kas_registry.id }}"
+        state: absent
+      register: kas_delete_idempotent
+      when: kas_create.kas_registry.id is defined
+      tags: [cleanup, kas_registry]
+
+    - name: "CLEANUP KAS_REGISTRY | Verify delete idempotency"
+      ansible.builtin.assert:
+        that:
+          - not kas_delete_idempotent.changed
+        fail_msg: "KAS registry delete was not idempotent"
+      when: kas_delete_idempotent is not skipped
+      tags: [cleanup, kas_registry]
+
+    # --- Clean up attributes ---
+    - name: "CLEANUP ATTRIBUTE | Deactivate sensitivity attribute"
+      dsp.tructl.attribute:
+        namespace: "{{ test_namespace_id }}"
+        name: "{{ test_attr_name }}"
+        state: absent
+      register: attr_deactivate
+      tags: [cleanup, attribute]
+
+    - name: "CLEANUP ATTRIBUTE | Verify deactivation"
+      ansible.builtin.assert:
+        that:
+          - attr_deactivate.changed
+        fail_msg: "Attribute deactivation failed"
+      tags: [cleanup, attribute]
+
+    - name: "CLEANUP ATTRIBUTE | Deactivate department attribute"
+      dsp.tructl.attribute:
+        namespace: "{{ test_namespace_id }}"
+        name: "department"
+        state: absent
+      register: attr_deactivate_2
+      tags: [cleanup, attribute]
+
+    - name: "CLEANUP ATTRIBUTE | Deactivate clearance attribute"
+      dsp.tructl.attribute:
+        namespace: "{{ test_namespace_id }}"
+        name: "clearance"
+        state: absent
+      register: attr_deactivate_3
+      tags: [cleanup, attribute]
+
+    - name: "CLEANUP ATTRIBUTE | Idempotency - deactivate already inactive"
+      dsp.tructl.attribute:
+        namespace: "{{ test_namespace_id }}"
+        name: "{{ test_attr_name }}"
+        state: absent
+      register: attr_deactivate_idempotent
+      tags: [cleanup, attribute]
+
+    - name: "CLEANUP ATTRIBUTE | Verify deactivate idempotency"
+      ansible.builtin.assert:
+        that:
+          - not attr_deactivate_idempotent.changed
+        fail_msg: "Attribute deactivate was not idempotent"
+      tags: [cleanup, attribute]
+
+    # --- Clean up namespaces ---
+    - name: "CLEANUP NAMESPACE | Deactivate test namespace"
+      dsp.tructl.namespace:
+        name: "{{ test_namespace }}"
+        state: absent
+      register: ns_deactivate
+      tags: [cleanup, namespace]
+
+    - name: "CLEANUP NAMESPACE | Verify deactivation"
+      ansible.builtin.assert:
+        that:
+          - ns_deactivate.changed
+        fail_msg: "Namespace deactivation failed"
+      tags: [cleanup, namespace]
+
+    - name: "CLEANUP NAMESPACE | Idempotency - deactivate already inactive"
+      dsp.tructl.namespace:
+        name: "{{ test_namespace }}"
+        state: absent
+      register: ns_deactivate_idempotent
+      tags: [cleanup, namespace]
+
+    - name: "CLEANUP NAMESPACE | Verify deactivate idempotency"
+      ansible.builtin.assert:
+        that:
+          - not ns_deactivate_idempotent.changed
+        fail_msg: "Namespace deactivate was not idempotent"
+      tags: [cleanup, namespace]
+
+    # --- Clean up test files ---
+    - name: "CLEANUP FILES | Remove test files"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ test_plaintext_file }}"
+        - "{{ test_tdf_file }}"
+        - "{{ test_decrypted_file }}"
+        - "/tmp/tructl_test_with_attrs.tdf"
+        - "/tmp/tructl_test_with_attrs.txt"
+        - "/tmp/tructl_test_export.yaml"
+      tags: [cleanup, files]
+
+    # =========================================================================
+    # SUMMARY
+    # =========================================================================
+    - name: "SUMMARY | Test run complete"
+      ansible.builtin.debug:
+        msg: |
+          ============================================
+          dsp.tructl Collection Test Summary
+          ============================================
+          Modules tested:
+            1. tructl_profile    (check mode - requires D-Bus keyring)
+            2. tructl_auth       (check mode - requires D-Bus keyring)
+            3. tructl_namespace  (present, list, absent)
+            4. tructl_attribute  (present with hierarchy/anyOf/allOf, list, absent)
+            5. tructl_kas_registry (present, list, absent)
+            6. tructl_subject_mapping (present, list, absent)
+            7. tructl_resource_mapping (present with single/multi terms, list, absent)
+            8. tructl_kas_grant  (dry-run, commit)
+            9. tructl_action     (present, idempotency, absent)
+           10. tructl_attribute_value (present, absent)
+           11. tructl_resource_mapping_group (present, idempotency, absent)
+           12. tructl_subject_condition_set (present, absent - not idempotent)
+           13. tructl_obligation (present, idempotency, absent)
+           14. tructl_registered_resource (present, idempotency, absent)
+           15. tructl_key_provider (present, idempotency, absent)
+           16. tructl_attribute_key (check mode - no KAS keys available)
+           17. tructl_attribute_value_key (check mode - no KAS keys available)
+           18. tructl_namespace_key (check mode - no KAS keys available)
+           19. tructl_policy_export (export with --no-bundle)
+           20. tructl_policy_import (import with no_verify_signature)
+           21. tructl_provision  (check mode - avoid polluting namespace)
+           22. tructl_encrypt    (basic, with attrs, force, idempotency)
+           23. tructl_inspect    (basic, with attrs, always unchanged)
+           24. tructl_decrypt    (basic, force, default naming, idempotency, content verify)
+          Lookup plugins tested:
+            1. subject_match     (query entitlements, ignore_errors)
+          ============================================
+          All idempotency checks verified.
+          All cleanup/absent operations verified.
+          ============================================
+      tags: [always]

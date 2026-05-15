@@ -1,0 +1,35 @@
+namespace: dsp
+name: tructl
+version: 1.0.0
+readme: README.md
+authors:
+  - Greg Paladin <greg.paladin@virtru.com>
+description: |
+  Ansible collection for managing the Virtru Data Security Platform (DSP) via
+  the tructl CLI. Provides 25 idempotent modules for policy management,
+  authentication, encryption/decryption, and KAS configuration.
+license_file: COPYING
+tags:
+  - dsp
+  - tructl
+  - opentdf
+  - policy
+  - encryption
+  - kas
+  - security
+  - virtru
+dependencies: {}
+repository: https://github.com/gpa7407/ansible-dsp-tructl
+documentation: https://github.com/gpa7407/ansible-dsp-tructl/blob/main/README.md
+homepage: https://github.com/gpa7407/ansible-dsp-tructl
+issues: https://github.com/gpa7407/ansible-dsp-tructl/issues
+build_ignore:
+  - .vscode
+  - .git
+  - .gitignore
+  - .github
+  - tests/integration/inventory*
+  - changelogs/.plugin-cache.yaml
+  - '*.tar.gz'
+  - __pycache__
+  - '*.pyc'
