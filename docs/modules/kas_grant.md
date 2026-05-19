@@ -26,12 +26,12 @@ Migrate KAS grants.
 
 ```yaml
 - name: Migrate KAS grants with commit
-  dsp.tructl.kas_grant:
+  virtru.dsp_tructl.kas_grant:
     interactive: true
     commit: true
 
 - name: Preview KAS grants migration without committing
-  dsp.tructl.kas_grant:
+  virtru.dsp_tructl.kas_grant:
     interactive: true
     commit: false
   register: migration_preview

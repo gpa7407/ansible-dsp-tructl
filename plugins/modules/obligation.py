@@ -60,15 +60,15 @@ notes:
 - This module requires C(tructl) to be installed on the Ansible controller.
 - Check mode is supported for all states.
 seealso:
-- module: dsp.tructl.attribute
-- module: dsp.tructl.namespace
+- module: virtru.dsp_tructl.attribute
+- module: virtru.dsp_tructl.namespace
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create an obligation
-  dsp.tructl.obligation:
+  virtru.dsp_tructl.obligation:
     name: watermark
     namespace: "https://example.com/attr"
     values:
@@ -76,17 +76,17 @@ EXAMPLES = r"""
     state: present
 
 - name: List all obligations
-  dsp.tructl.obligation:
+  virtru.dsp_tructl.obligation:
     state: list
   register: obl_result
 
 - name: Delete an obligation by ID
-  dsp.tructl.obligation:
+  virtru.dsp_tructl.obligation:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 
 - name: Delete an obligation by FQN
-  dsp.tructl.obligation:
+  virtru.dsp_tructl.obligation:
     fqn: "https://example.com/attr/obligation/watermark"
     state: absent
 """
@@ -105,7 +105,7 @@ obligations:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

@@ -14,7 +14,7 @@ short_description: Export policy configuration using tructl
 version_added: "1.1.0"
 description:
 - Exports policy configuration from the platform to a local file using C(tructl export).
-- The exported bundle can later be imported into another environment with M(dsp.tructl.policy_import).
+- The exported bundle can later be imported into another environment with M(virtru.dsp_tructl.policy_import).
 - This module is idempotent by default and skips the export if the destination file already exists.
   Use O(force=true) to overwrite an existing file.
 options:
@@ -58,19 +58,19 @@ options:
     - Dictionary with C(clientId) and C(clientSecret) for authentication.
     type: dict
 notes:
-- Authentication must be configured via O(client_creds) or a prior M(dsp.tructl.auth) call.
+- Authentication must be configured via O(client_creds) or a prior M(virtru.dsp_tructl.auth) call.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.policy_import
-- module: dsp.tructl.provision
-- module: dsp.tructl.auth
+- module: virtru.dsp_tructl.policy_import
+- module: virtru.dsp_tructl.provision
+- module: virtru.dsp_tructl.auth
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Export policy for a namespace
-  dsp.tructl.policy_export:
+  virtru.dsp_tructl.policy_export:
     namespace: demo.com
     dest: /tmp/demo-policy.bundle
     host: https://platform.dsp.vm
@@ -79,13 +79,13 @@ EXAMPLES = r"""
       clientSecret: secret
 
 - name: Export raw policy data (no bundle)
-  dsp.tructl.policy_export:
+  virtru.dsp_tructl.policy_export:
     namespace: demo.com
     dest: /tmp/demo-policy.json
     no_bundle: true
 
 - name: Force re-export of an existing file
-  dsp.tructl.policy_export:
+  virtru.dsp_tructl.policy_export:
     namespace: demo.com
     dest: /tmp/demo-policy.bundle
     force: true
@@ -102,7 +102,7 @@ dest:
 import os
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

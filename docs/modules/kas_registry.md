@@ -21,25 +21,25 @@ Manage DSP Key Access Server registry entries.
 ## Notes
 
 - The KAS is the Policy Enforcement Point (PEP) in the NIST ABAC model.
-- After registering a KAS, use `dsp.tructl.kas_key` to import keys.
+- After registering a KAS, use `virtru.dsp_tructl.kas_key` to import keys.
 - This module requires `tructl` to be installed on the Ansible controller.
 
 ## Examples
 
 ```yaml
 - name: Register a KAS server
-  dsp.tructl.kas_registry:
+  virtru.dsp_tructl.kas_registry:
     name: primary-kas
     uri: "https://platform.dsp.lab/kas"
     state: present
 
 - name: List all KAS registry entries
-  dsp.tructl.kas_registry:
+  virtru.dsp_tructl.kas_registry:
     state: list
   register: kas_result
 
 - name: Remove a KAS registry entry by ID
-  dsp.tructl.kas_registry:
+  virtru.dsp_tructl.kas_registry:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 ```

@@ -55,15 +55,15 @@ notes:
   - Check mode is supported for all states.
   - When I(state=absent), the attribute is deactivated rather than permanently deleted.
 seealso:
-  - module: dsp.tructl.namespace
-  - module: dsp.tructl.subject_mapping
+  - module: virtru.dsp_tructl.namespace
+  - module: virtru.dsp_tructl.subject_mapping
 author:
   - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create a classification attribute with hierarchy rule
-  dsp.tructl.attribute:
+  virtru.dsp_tructl.attribute:
     namespace: "https://example.com/attr"
     name: classification
     rule: hierarchy
@@ -75,7 +75,7 @@ EXAMPLES = r"""
     state: present
 
 - name: Create a department attribute with anyOf rule
-  dsp.tructl.attribute:
+  virtru.dsp_tructl.attribute:
     namespace: "https://example.com/attr"
     name: department
     rule: anyOf
@@ -86,13 +86,13 @@ EXAMPLES = r"""
     state: present
 
 - name: Deactivate an attribute
-  dsp.tructl.attribute:
+  virtru.dsp_tructl.attribute:
     namespace: "https://example.com/attr"
     name: classification
     state: absent
 
 - name: List all attributes
-  dsp.tructl.attribute:
+  virtru.dsp_tructl.attribute:
     namespace: unused
     name: unused
     state: list
@@ -145,7 +145,7 @@ attributes:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

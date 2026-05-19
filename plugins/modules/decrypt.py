@@ -41,29 +41,29 @@ options:
     type: str
     default: tructl
 notes:
-- Authentication must be performed with M(dsp.tructl.auth) before decrypting files.
+- Authentication must be performed with M(virtru.dsp_tructl.auth) before decrypting files.
 - The authenticated user must have the required attributes to satisfy the TDF's access policy.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.encrypt
-- module: dsp.tructl.inspect
-- module: dsp.tructl.auth
+- module: virtru.dsp_tructl.encrypt
+- module: virtru.dsp_tructl.inspect
+- module: virtru.dsp_tructl.auth
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Decrypt a TDF file to a specific path
-  dsp.tructl.decrypt:
+  virtru.dsp_tructl.decrypt:
     src: /data/report.pdf.tdf
     dest: /data/report.pdf
 
 - name: Decrypt with default output name
-  dsp.tructl.decrypt:
+  virtru.dsp_tructl.decrypt:
     src: /data/notes.txt.tdf
 
 - name: Force re-decryption of an existing file
-  dsp.tructl.decrypt:
+  virtru.dsp_tructl.decrypt:
     src: /data/report.pdf.tdf
     dest: /data/report.pdf
     force: true
@@ -80,7 +80,7 @@ dest:
 import os
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

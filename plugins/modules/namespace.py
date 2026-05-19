@@ -39,25 +39,25 @@ notes:
   - This module requires the C(tructl) CLI to be installed and configured on the target host.
   - Check mode is supported for C(present) and C(absent) states.
 seealso:
-  - module: dsp.tructl.attribute
+  - module: virtru.dsp_tructl.attribute
 author:
   - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create a namespace
-  dsp.tructl.namespace:
+  virtru.dsp_tructl.namespace:
     name: "https://example.com/attr"
     state: present
 
 - name: List all namespaces
-  dsp.tructl.namespace:
+  virtru.dsp_tructl.namespace:
     name: unused
     state: list
   register: ns_result
 
 - name: Deactivate a namespace
-  dsp.tructl.namespace:
+  virtru.dsp_tructl.namespace:
     name: "https://example.com/attr"
     state: absent
 """
@@ -88,7 +88,7 @@ namespaces:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

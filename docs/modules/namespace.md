@@ -24,18 +24,18 @@ Manage DSP policy attribute namespaces.
 
 ```yaml
 - name: Create a namespace
-  dsp.tructl.namespace:
+  virtru.dsp_tructl.namespace:
     name: "https://example.com/attr"
     state: present
 
 - name: List all namespaces
-  dsp.tructl.namespace:
+  virtru.dsp_tructl.namespace:
     name: unused
     state: list
   register: ns_result
 
 - name: Deactivate a namespace
-  dsp.tructl.namespace:
+  virtru.dsp_tructl.namespace:
     name: "https://example.com/attr"
     state: absent
 ```

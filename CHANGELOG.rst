@@ -10,7 +10,7 @@ v1.0.0
 Release Summary
 ---------------
 
-Initial release of the ``dsp.tructl`` collection.
+Initial release of the ``virtru.dsp_tructl`` collection.
 
 Major Changes
 -------------

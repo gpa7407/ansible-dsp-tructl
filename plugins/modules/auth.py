@@ -37,26 +37,26 @@ options:
 notes:
 - Always set C(no_log=true) when using O(client_secret) to prevent credential exposure in logs.
 - This module requires C(tructl) to be installed on the Ansible controller.
-- A profile should be configured with M(dsp.tructl.profile) before authenticating.
+- A profile should be configured with M(virtru.dsp_tructl.profile) before authenticating.
 seealso:
-- module: dsp.tructl.profile
+- module: virtru.dsp_tructl.profile
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Authenticate with a public client
-  dsp.tructl.auth:
+  virtru.dsp_tructl.auth:
     client_id: cli-client
 
 - name: Authenticate with a confidential client
-  dsp.tructl.auth:
+  virtru.dsp_tructl.auth:
     client_id: my-service
     client_secret: "{{ vault_client_secret }}"
   no_log: true
 
 - name: Authenticate using a custom tructl binary path
-  dsp.tructl.auth:
+  virtru.dsp_tructl.auth:
     client_id: cli-client
     tructl_bin: /usr/local/bin/tructl
 """
@@ -70,7 +70,7 @@ msg:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

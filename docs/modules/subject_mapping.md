@@ -29,7 +29,7 @@ Manage DSP policy subject mappings.
 
 ```yaml
 - name: Create a subject mapping granting DECRYPT to admins
-  dsp.tructl.subject_mapping:
+  virtru.dsp_tructl.subject_mapping:
     attribute_value_id: "abc-123-def-456"
     actions:
       - standard: DECRYPT
@@ -44,12 +44,12 @@ Manage DSP policy subject mappings.
     state: present
 
 - name: List all subject mappings
-  dsp.tructl.subject_mapping:
+  virtru.dsp_tructl.subject_mapping:
     state: list
   register: sm_result
 
 - name: Delete a subject mapping by ID
-  dsp.tructl.subject_mapping:
+  virtru.dsp_tructl.subject_mapping:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 ```

@@ -27,14 +27,14 @@ Manage DSP policy resource mappings.
 
 ```yaml
 - name: Create a resource mapping for classification
-  dsp.tructl.resource_mapping:
+  virtru.dsp_tructl.resource_mapping:
     attribute_value_id: "abc-123-def-456"
     terms:
       - "classification:secret"
     state: present
 
 - name: Create a resource mapping with multiple terms
-  dsp.tructl.resource_mapping:
+  virtru.dsp_tructl.resource_mapping:
     attribute_value_id: "abc-123-def-456"
     terms:
       - "classification:secret"
@@ -42,12 +42,12 @@ Manage DSP policy resource mappings.
     state: present
 
 - name: List all resource mappings
-  dsp.tructl.resource_mapping:
+  virtru.dsp_tructl.resource_mapping:
     state: list
   register: rm_result
 
 - name: Delete a resource mapping by ID
-  dsp.tructl.resource_mapping:
+  virtru.dsp_tructl.resource_mapping:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 ```

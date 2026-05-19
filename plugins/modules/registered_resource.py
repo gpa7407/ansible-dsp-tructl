@@ -49,14 +49,14 @@ notes:
 - This module requires C(tructl) to be installed on the Ansible controller.
 - Check mode is supported for all states.
 seealso:
-- module: dsp.tructl.resource_mapping
+- module: virtru.dsp_tructl.resource_mapping
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create a registered resource
-  dsp.tructl.registered_resource:
+  virtru.dsp_tructl.registered_resource:
     name: "customer-database"
     values:
       - confidential
@@ -64,12 +64,12 @@ EXAMPLES = r"""
     state: present
 
 - name: List all registered resources
-  dsp.tructl.registered_resource:
+  virtru.dsp_tructl.registered_resource:
     state: list
   register: rr_result
 
 - name: Delete a registered resource by ID
-  dsp.tructl.registered_resource:
+  virtru.dsp_tructl.registered_resource:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 """
@@ -88,7 +88,7 @@ registered_resources:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

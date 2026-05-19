@@ -52,32 +52,32 @@ notes:
 - This module requires C(tructl) to be installed on the Ansible controller.
 - Check mode is supported for all states.
 seealso:
-- module: dsp.tructl.attribute
-- module: dsp.tructl.namespace
+- module: virtru.dsp_tructl.attribute
+- module: virtru.dsp_tructl.namespace
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create an attribute value
-  dsp.tructl.attribute_value:
+  virtru.dsp_tructl.attribute_value:
     attribute_id: "abc-123-def-456"
     value: confidential
     state: present
 
 - name: List all attribute values
-  dsp.tructl.attribute_value:
+  virtru.dsp_tructl.attribute_value:
     state: list
   register: val_result
 
 - name: List attribute values for a specific attribute
-  dsp.tructl.attribute_value:
+  virtru.dsp_tructl.attribute_value:
     attribute_id: "abc-123-def-456"
     state: list
   register: val_result
 
 - name: Deactivate an attribute value by ID
-  dsp.tructl.attribute_value:
+  virtru.dsp_tructl.attribute_value:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 """
@@ -96,7 +96,7 @@ attribute_values:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

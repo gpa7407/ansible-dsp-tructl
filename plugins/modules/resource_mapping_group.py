@@ -49,26 +49,26 @@ notes:
 - This module requires C(tructl) to be installed on the Ansible controller.
 - Check mode is supported for all states.
 seealso:
-- module: dsp.tructl.resource_mapping
-- module: dsp.tructl.namespace
+- module: virtru.dsp_tructl.resource_mapping
+- module: virtru.dsp_tructl.namespace
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create a resource mapping group
-  dsp.tructl.resource_mapping_group:
+  virtru.dsp_tructl.resource_mapping_group:
     namespace_id: "abc-123-def-456"
     name: classification-mappings
     state: present
 
 - name: List all resource mapping groups
-  dsp.tructl.resource_mapping_group:
+  virtru.dsp_tructl.resource_mapping_group:
     state: list
   register: rmg_result
 
 - name: Delete a resource mapping group by ID
-  dsp.tructl.resource_mapping_group:
+  virtru.dsp_tructl.resource_mapping_group:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 """
@@ -87,7 +87,7 @@ resource_mapping_groups:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

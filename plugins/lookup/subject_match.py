@@ -56,26 +56,26 @@ notes:
 - Authentication must be configured via O(client_creds) or a prior C(tructl auth) profile.
 - The plugin requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.subject_mapping
-- module: dsp.tructl.auth
+- module: virtru.dsp_tructl.subject_mapping
+- module: virtru.dsp_tructl.auth
 """
 
 EXAMPLES = r"""
 - name: Check entitlements for a subject
   ansible.builtin.debug:
-    msg: "{{ lookup('dsp.tructl.subject_match', '{\"sub\": \"user1\"}', host='https://platform.dsp.vm', tls_no_verify=true, client_creds={'clientId': 'opentdf', 'clientSecret': 'secret'}) }}"
+    msg: "{{ lookup('virtru.dsp_tructl.subject_match', '{\"sub\": \"user1\"}', host='https://platform.dsp.vm', tls_no_verify=true, client_creds={'clientId': 'opentdf', 'clientSecret': 'secret'}) }}"
 
 - name: Match with selectors
   ansible.builtin.debug:
-    msg: "{{ lookup('dsp.tructl.subject_match', '{\"sub\": \"user1\"}', host='https://platform.dsp.vm', selectors=['.department', '.title'], client_creds={'clientId': 'opentdf', 'clientSecret': 'secret'}) }}"
+    msg: "{{ lookup('virtru.dsp_tructl.subject_match', '{\"sub\": \"user1\"}', host='https://platform.dsp.vm', selectors=['.department', '.title'], client_creds={'clientId': 'opentdf', 'clientSecret': 'secret'}) }}"
 
 - name: Match multiple subjects
   ansible.builtin.debug:
-    msg: "{{ lookup('dsp.tructl.subject_match', '{\"sub\": \"user1\"}', '{\"sub\": \"user2\"}', host='https://platform.dsp.vm', client_creds={'clientId': 'opentdf', 'clientSecret': 'secret'}) }}"
+    msg: "{{ lookup('virtru.dsp_tructl.subject_match', '{\"sub\": \"user1\"}', '{\"sub\": \"user2\"}', host='https://platform.dsp.vm', client_creds={'clientId': 'opentdf', 'clientSecret': 'secret'}) }}"
 
 - name: Store result in a variable
   ansible.builtin.set_fact:
-    entitlements: "{{ lookup('dsp.tructl.subject_match', subject_json, host=platform_host, client_creds=creds) }}"
+    entitlements: "{{ lookup('virtru.dsp_tructl.subject_match', subject_json, host=platform_host, client_creds=creds) }}"
 """
 
 RETURN = r"""

@@ -49,14 +49,14 @@ notes:
 - This module requires C(tructl) to be installed on the Ansible controller.
 - Check mode is supported for all states.
 seealso:
-- module: dsp.tructl.subject_mapping
+- module: virtru.dsp_tructl.subject_mapping
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create a subject condition set
-  dsp.tructl.subject_condition_set:
+  virtru.dsp_tructl.subject_condition_set:
     subject_sets:
       - condition_groups:
           - boolean_operator: AND
@@ -68,12 +68,12 @@ EXAMPLES = r"""
     state: present
 
 - name: List all subject condition sets
-  dsp.tructl.subject_condition_set:
+  virtru.dsp_tructl.subject_condition_set:
     state: list
   register: scs_result
 
 - name: Delete a subject condition set by ID
-  dsp.tructl.subject_condition_set:
+  virtru.dsp_tructl.subject_condition_set:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 """
@@ -94,7 +94,7 @@ subject_condition_sets:
 import json
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

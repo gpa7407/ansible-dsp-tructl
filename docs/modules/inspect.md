@@ -25,7 +25,7 @@ Inspect TDF file metadata.
 
 ```yaml
 - name: Inspect a TDF file
-  dsp.tructl.inspect:
+  virtru.dsp_tructl.inspect:
     src: /data/report.pdf.tdf
   register: tdf_info
 
@@ -34,7 +34,7 @@ Inspect TDF file metadata.
     var: tdf_info.tdf_info
 
 - name: Check TDF attributes before processing
-  dsp.tructl.inspect:
+  virtru.dsp_tructl.inspect:
     src: /data/sensitive.tdf
   register: tdf_meta
 

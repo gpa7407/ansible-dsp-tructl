@@ -44,24 +44,24 @@ notes:
 - This module requires C(tructl) to be installed on the Ansible controller.
 - Check mode is supported for all states.
 seealso:
-- module: dsp.tructl.subject_mapping
+- module: virtru.dsp_tructl.subject_mapping
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create a DECRYPT action
-  dsp.tructl.action:
+  virtru.dsp_tructl.action:
     name: DECRYPT
     state: present
 
 - name: List all actions
-  dsp.tructl.action:
+  virtru.dsp_tructl.action:
     state: list
   register: action_result
 
 - name: Delete an action by ID
-  dsp.tructl.action:
+  virtru.dsp_tructl.action:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 """
@@ -80,7 +80,7 @@ actions:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

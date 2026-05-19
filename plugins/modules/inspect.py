@@ -33,15 +33,15 @@ notes:
 - The module first attempts JSON output, falling back to raw text output if JSON is not supported.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.encrypt
-- module: dsp.tructl.decrypt
+- module: virtru.dsp_tructl.encrypt
+- module: virtru.dsp_tructl.decrypt
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Inspect a TDF file
-  dsp.tructl.inspect:
+  virtru.dsp_tructl.inspect:
     src: /data/report.pdf.tdf
   register: tdf_info
 
@@ -50,7 +50,7 @@ EXAMPLES = r"""
     var: tdf_info.tdf_info
 
 - name: Check TDF attributes before processing
-  dsp.tructl.inspect:
+  virtru.dsp_tructl.inspect:
     src: /data/sensitive.tdf
   register: tdf_meta
 
@@ -76,7 +76,7 @@ raw_output:
 import os
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

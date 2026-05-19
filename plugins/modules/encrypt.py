@@ -47,32 +47,32 @@ options:
     type: str
     default: tructl
 notes:
-- Authentication must be performed with M(dsp.tructl.auth) before encrypting files.
+- Authentication must be performed with M(virtru.dsp_tructl.auth) before encrypting files.
 - The TDF format is a standard ZIP archive containing an encrypted payload and manifest.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.decrypt
-- module: dsp.tructl.inspect
-- module: dsp.tructl.auth
+- module: virtru.dsp_tructl.decrypt
+- module: virtru.dsp_tructl.inspect
+- module: virtru.dsp_tructl.auth
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Encrypt a file with classification attributes
-  dsp.tructl.encrypt:
+  virtru.dsp_tructl.encrypt:
     src: /data/report.pdf
     dest: /data/report.pdf.tdf
     attributes:
       - "https://example.com/attr/classification/value/secret"
 
 - name: Encrypt a file without attributes
-  dsp.tructl.encrypt:
+  virtru.dsp_tructl.encrypt:
     src: /data/notes.txt
     dest: /data/notes.txt.tdf
 
 - name: Force re-encryption of an existing TDF
-  dsp.tructl.encrypt:
+  virtru.dsp_tructl.encrypt:
     src: /data/report.pdf
     dest: /data/report.pdf.tdf
     force: true
@@ -80,7 +80,7 @@ EXAMPLES = r"""
       - "https://example.com/attr/classification/value/confidential"
 
 - name: Encrypt multiple files in a loop
-  dsp.tructl.encrypt:
+  virtru.dsp_tructl.encrypt:
     src: "{{ item }}"
     dest: "{{ item }}.tdf"
     attributes:
@@ -101,7 +101,7 @@ dest:
 import os
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

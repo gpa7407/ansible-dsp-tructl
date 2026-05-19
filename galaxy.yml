@@ -1,5 +1,5 @@
-namespace: dsp
-name: tructl
+namespace: virtru
+name: dsp_tructl
 version: 1.0.0
 readme: README.md
 authors:

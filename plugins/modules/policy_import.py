@@ -14,7 +14,7 @@ short_description: Import a policy bundle using tructl
 version_added: "1.1.0"
 description:
 - Imports a policy bundle into the platform using C(tructl import).
-- The bundle is typically produced by M(dsp.tructl.policy_export).
+- The bundle is typically produced by M(virtru.dsp_tructl.policy_export).
 - This module always reports C(changed=true) because the import operation is not idempotent.
 options:
   artifact:
@@ -48,19 +48,19 @@ options:
     type: dict
 notes:
 - This module always reports C(changed=true) because policy import is not idempotent.
-- Authentication must be configured via O(client_creds) or a prior M(dsp.tructl.auth) call.
+- Authentication must be configured via O(client_creds) or a prior M(virtru.dsp_tructl.auth) call.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.policy_export
-- module: dsp.tructl.provision
-- module: dsp.tructl.auth
+- module: virtru.dsp_tructl.policy_export
+- module: virtru.dsp_tructl.provision
+- module: virtru.dsp_tructl.auth
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Import a policy bundle
-  dsp.tructl.policy_import:
+  virtru.dsp_tructl.policy_import:
     artifact: /tmp/demo-policy.bundle
     host: https://platform.dsp.vm
     client_creds:
@@ -68,7 +68,7 @@ EXAMPLES = r"""
       clientSecret: secret
 
 - name: Import a policy bundle without signature verification
-  dsp.tructl.policy_import:
+  virtru.dsp_tructl.policy_import:
     artifact: /tmp/demo-policy.bundle
     no_verify_signature: true
     host: https://platform.dsp.vm
@@ -92,7 +92,7 @@ stdout:
 import os
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

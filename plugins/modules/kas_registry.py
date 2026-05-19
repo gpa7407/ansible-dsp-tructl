@@ -47,29 +47,29 @@ options:
     default: tructl
 notes:
 - The KAS is the Policy Enforcement Point (PEP) in the NIST ABAC model.
-- After registering a KAS, use M(dsp.tructl.kas_key) to import keys.
+- After registering a KAS, use M(virtru.dsp_tructl.kas_key) to import keys.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.kas_key
-- module: dsp.tructl.kas_grant
+- module: virtru.dsp_tructl.kas_key
+- module: virtru.dsp_tructl.kas_grant
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Register a KAS server
-  dsp.tructl.kas_registry:
+  virtru.dsp_tructl.kas_registry:
     name: primary-kas
     uri: "https://platform.dsp.lab/kas"
     state: present
 
 - name: List all KAS registry entries
-  dsp.tructl.kas_registry:
+  virtru.dsp_tructl.kas_registry:
     state: list
   register: kas_result
 
 - name: Remove a KAS registry entry by ID
-  dsp.tructl.kas_registry:
+  virtru.dsp_tructl.kas_registry:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 """
@@ -88,7 +88,7 @@ kas_registries:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

@@ -48,27 +48,27 @@ notes:
   - This module requires the tructl CLI to be installed on the target host.
   - Check mode is supported.
 seealso:
-  - module: dsp.tructl.auth
-  - module: dsp.tructl.encrypt
+  - module: virtru.dsp_tructl.auth
+  - module: virtru.dsp_tructl.encrypt
 author:
   - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create and set default profile
-  dsp.tructl.profile:
+  virtru.dsp_tructl.profile:
     name: dsp-lab
     endpoint: "https://platform.dsp.lab"
     default: true
 
 - name: List all profiles
-  dsp.tructl.profile:
+  virtru.dsp_tructl.profile:
     name: unused
     state: list
   register: profiles
 
 - name: Remove a profile
-  dsp.tructl.profile:
+  virtru.dsp_tructl.profile:
     name: old-profile
     state: absent
 """
@@ -87,7 +87,7 @@ profiles:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

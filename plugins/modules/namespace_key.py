@@ -40,24 +40,24 @@ options:
     type: str
     default: tructl
 notes:
-- The namespace must already exist. Use M(dsp.tructl.namespace) to create it first.
+- The namespace must already exist. Use M(virtru.dsp_tructl.namespace) to create it first.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.namespace
-- module: dsp.tructl.kas_key
+- module: virtru.dsp_tructl.namespace
+- module: virtru.dsp_tructl.kas_key
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Assign a KAS key to a namespace
-  dsp.tructl.namespace_key:
+  virtru.dsp_tructl.namespace_key:
     namespace: "https://example.com/attr/classification"
     key_id: "key-789-abc-012"
     state: present
 
 - name: Remove a KAS key from a namespace
-  dsp.tructl.namespace_key:
+  virtru.dsp_tructl.namespace_key:
     namespace: "https://example.com/attr/classification"
     key_id: "key-789-abc-012"
     state: absent
@@ -77,7 +77,7 @@ msg:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

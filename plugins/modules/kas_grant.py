@@ -38,20 +38,20 @@ notes:
 - Use O(commit=false) to preview what the migration would do before committing.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.kas_registry
-- module: dsp.tructl.kas_key
+- module: virtru.dsp_tructl.kas_registry
+- module: virtru.dsp_tructl.kas_key
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Migrate KAS grants with commit
-  dsp.tructl.kas_grant:
+  virtru.dsp_tructl.kas_grant:
     interactive: true
     commit: true
 
 - name: Preview KAS grants migration without committing
-  dsp.tructl.kas_grant:
+  virtru.dsp_tructl.kas_grant:
     interactive: true
     commit: false
   register: migration_preview
@@ -71,7 +71,7 @@ stdout:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

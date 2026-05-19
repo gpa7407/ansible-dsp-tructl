@@ -1,5 +1,5 @@
 ---
-# Test playbook for dsp.tructl collection
+# Test playbook for virtru.dsp_tructl collection
 # Tests all 24 modules and 1 lookup plugin with all options
 # Order: create/present first, cleanup/absent last
 #
@@ -14,7 +14,7 @@
 #   - Profile and Auth modules require D-Bus keyring; tested separately via check mode
 #   - All policy/KAS/crypto modules tested with full create -> verify -> cleanup cycle
 #
-- name: Test dsp.tructl collection - all modules
+- name: Test virtru.dsp_tructl collection - all modules
   hosts: dsp_vm
   gather_facts: false
 
@@ -52,118 +52,118 @@
     test_decrypted_file: "/tmp/tructl_test_decrypted.txt"
 
   module_defaults:
-    dsp.tructl.profile:
+    virtru.dsp_tructl.profile:
       tructl_bin: "{{ tructl_bin }}"
-    dsp.tructl.auth:
+    virtru.dsp_tructl.auth:
       tructl_bin: "{{ tructl_bin }}"
-    dsp.tructl.namespace:
-      tructl_bin: "{{ tructl_bin }}"
-      host: "{{ tructl_host }}"
-      tls_no_verify: "{{ tructl_tls_no_verify }}"
-      client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.attribute:
+    virtru.dsp_tructl.namespace:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.subject_mapping:
+    virtru.dsp_tructl.attribute:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.resource_mapping:
+    virtru.dsp_tructl.subject_mapping:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.kas_registry:
+    virtru.dsp_tructl.resource_mapping:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.kas_key:
+    virtru.dsp_tructl.kas_registry:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.kas_grant:
+    virtru.dsp_tructl.kas_key:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.encrypt:
+    virtru.dsp_tructl.kas_grant:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.decrypt:
+    virtru.dsp_tructl.encrypt:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.inspect:
-      tructl_bin: "{{ tructl_bin }}"
-    dsp.tructl.action:
+    virtru.dsp_tructl.decrypt:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.attribute_value:
+    virtru.dsp_tructl.inspect:
+      tructl_bin: "{{ tructl_bin }}"
+    virtru.dsp_tructl.action:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.resource_mapping_group:
+    virtru.dsp_tructl.attribute_value:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.subject_condition_set:
+    virtru.dsp_tructl.resource_mapping_group:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.obligation:
+    virtru.dsp_tructl.subject_condition_set:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.registered_resource:
+    virtru.dsp_tructl.obligation:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.key_provider:
+    virtru.dsp_tructl.registered_resource:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.attribute_key:
+    virtru.dsp_tructl.key_provider:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.attribute_value_key:
+    virtru.dsp_tructl.attribute_key:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.namespace_key:
+    virtru.dsp_tructl.attribute_value_key:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.policy_export:
+    virtru.dsp_tructl.namespace_key:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.policy_import:
+    virtru.dsp_tructl.policy_export:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
       client_creds: "{{ tructl_client_creds }}"
-    dsp.tructl.provision:
+    virtru.dsp_tructl.policy_import:
+      tructl_bin: "{{ tructl_bin }}"
+      host: "{{ tructl_host }}"
+      tls_no_verify: "{{ tructl_tls_no_verify }}"
+      client_creds: "{{ tructl_client_creds }}"
+    virtru.dsp_tructl.provision:
       tructl_bin: "{{ tructl_bin }}"
       host: "{{ tructl_host }}"
       tls_no_verify: "{{ tructl_tls_no_verify }}"
@@ -180,7 +180,7 @@
 
     - name: Create test plaintext file for encryption tests
       ansible.builtin.copy:
-        content: "This is a test file for dsp.tructl collection testing."
+        content: "This is a test file for virtru.dsp_tructl collection testing."
         dest: "{{ test_plaintext_file }}"
         mode: "0644"
       tags: [setup, create]
@@ -189,7 +189,7 @@
     # MODULE 1: tructl_profile - check mode only (requires D-Bus keyring)
     # =========================================================================
     - name: "PROFILE | Create test profile (check mode - keyring not available headless)"
-      dsp.tructl.profile:
+      virtru.dsp_tructl.profile:
         name: "test-profile"
         endpoint: "{{ dsp_endpoint }}"
         state: present
@@ -208,7 +208,7 @@
     # MODULE 2: tructl_auth - check mode only (requires D-Bus keyring)
     # =========================================================================
     - name: "AUTH | Authenticate (check mode - keyring not available headless)"
-      dsp.tructl.auth:
+      virtru.dsp_tructl.auth:
         client_id: "{{ dsp_client_id }}"
       register: auth_check
       check_mode: true
@@ -226,7 +226,7 @@
     # MODULE 3: tructl_namespace - state: present
     # =========================================================================
     - name: "NAMESPACE | Create test namespace"
-      dsp.tructl.namespace:
+      virtru.dsp_tructl.namespace:
         name: "{{ test_namespace }}"
         state: present
       register: ns_create
@@ -241,7 +241,7 @@
       tags: [create, namespace]
 
     - name: "NAMESPACE | Idempotency check - create same namespace"
-      dsp.tructl.namespace:
+      virtru.dsp_tructl.namespace:
         name: "{{ test_namespace }}"
         state: present
       register: ns_idempotent
@@ -255,7 +255,7 @@
       tags: [create, namespace]
 
     - name: "NAMESPACE | List all namespaces"
-      dsp.tructl.namespace:
+      virtru.dsp_tructl.namespace:
         name: unused
         state: list
       register: ns_list
@@ -275,7 +275,7 @@
       tags: [create, attribute]
 
     - name: "ATTRIBUTE | Create attribute with hierarchy rule"
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: "{{ test_namespace_id }}"
         name: "{{ test_attr_name }}"
         rule: "{{ test_attr_rule }}"
@@ -293,7 +293,7 @@
       tags: [create, attribute]
 
     - name: "ATTRIBUTE | Idempotency check - create same attribute"
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: "{{ test_namespace_id }}"
         name: "{{ test_attr_name }}"
         rule: "{{ test_attr_rule }}"
@@ -310,7 +310,7 @@
       tags: [create, attribute]
 
     - name: "ATTRIBUTE | Create a second attribute with anyOf rule"
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: "{{ test_namespace_id }}"
         name: "department"
         rule: "ANY_OF"
@@ -323,7 +323,7 @@
       tags: [create, attribute]
 
     - name: "ATTRIBUTE | Create a third attribute with allOf rule"
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: "{{ test_namespace_id }}"
         name: "clearance"
         rule: "ALL_OF"
@@ -335,7 +335,7 @@
       tags: [create, attribute]
 
     - name: "ATTRIBUTE | List all attributes"
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: unused
         name: unused
         state: list
@@ -351,7 +351,7 @@
     # MODULE 5: tructl_kas_registry - state: present
     # =========================================================================
     - name: "KAS_REGISTRY | Register a KAS server"
-      dsp.tructl.kas_registry:
+      virtru.dsp_tructl.kas_registry:
         name: "{{ test_kas_name }}"
         uri: "{{ test_kas_uri }}"
         state: present
@@ -367,7 +367,7 @@
       tags: [create, kas_registry]
 
     - name: "KAS_REGISTRY | Idempotency check - register same KAS"
-      dsp.tructl.kas_registry:
+      virtru.dsp_tructl.kas_registry:
         name: "{{ test_kas_name }}"
         uri: "{{ test_kas_uri }}"
         state: present
@@ -382,7 +382,7 @@
       tags: [create, kas_registry]
 
     - name: "KAS_REGISTRY | List all KAS registries"
-      dsp.tructl.kas_registry:
+      virtru.dsp_tructl.kas_registry:
         state: list
       register: kas_list
       tags: [create, kas_registry]
@@ -406,7 +406,7 @@
       tags: [create, subject_mapping]
 
     - name: "SUBJECT_MAPPING | Create subject mapping (DECRYPT for opentdf client)"
-      dsp.tructl.subject_mapping:
+      virtru.dsp_tructl.subject_mapping:
         attribute_value_id: "{{ test_attr_value_id }}"
         actions:
           - standard: "DECRYPT"
@@ -432,7 +432,7 @@
       tags: [create, subject_mapping]
 
     - name: "SUBJECT_MAPPING | Idempotency check - create same mapping"
-      dsp.tructl.subject_mapping:
+      virtru.dsp_tructl.subject_mapping:
         attribute_value_id: "{{ test_attr_value_id }}"
         actions:
           - standard: "DECRYPT"
@@ -458,7 +458,7 @@
       tags: [create, subject_mapping]
 
     - name: "SUBJECT_MAPPING | List all subject mappings"
-      dsp.tructl.subject_mapping:
+      virtru.dsp_tructl.subject_mapping:
         state: list
       register: sm_list
       tags: [create, subject_mapping]
@@ -472,7 +472,7 @@
     # MODULE 7: tructl_resource_mapping - state: present
     # =========================================================================
     - name: "RESOURCE_MAPPING | Create resource mapping with single term"
-      dsp.tructl.resource_mapping:
+      virtru.dsp_tructl.resource_mapping:
         attribute_value_id: "{{ test_attr_value_id }}"
         terms:
           - "classification:public"
@@ -490,7 +490,7 @@
       tags: [create, resource_mapping]
 
     - name: "RESOURCE_MAPPING | Idempotency check"
-      dsp.tructl.resource_mapping:
+      virtru.dsp_tructl.resource_mapping:
         attribute_value_id: "{{ test_attr_value_id }}"
         terms:
           - "classification:public"
@@ -518,7 +518,7 @@
       tags: [create, resource_mapping]
 
     - name: "RESOURCE_MAPPING | Create resource mapping with multiple terms"
-      dsp.tructl.resource_mapping:
+      virtru.dsp_tructl.resource_mapping:
         attribute_value_id: "{{ test_attr_value_id_2 }}"
         terms:
           - "classification:internal"
@@ -529,7 +529,7 @@
       tags: [create, resource_mapping]
 
     - name: "RESOURCE_MAPPING | List all resource mappings"
-      dsp.tructl.resource_mapping:
+      virtru.dsp_tructl.resource_mapping:
         state: list
       register: rm_list
       tags: [create, resource_mapping]
@@ -543,7 +543,7 @@
     # MODULE 8: tructl_kas_grant - migrate grants
     # =========================================================================
     - name: "KAS_GRANT | Test kas_grant module (check mode - requires TTY for actual run)"
-      dsp.tructl.kas_grant:
+      virtru.dsp_tructl.kas_grant:
         interactive: false
         commit: true
       register: kas_grant_check
@@ -562,7 +562,7 @@
     # MODULE 9: tructl_action - CRUD by name
     # =========================================================================
     - name: "ACTION | Create a custom action"
-      dsp.tructl.action:
+      virtru.dsp_tructl.action:
         name: "test-custom-action"
         state: present
       register: action_create
@@ -577,7 +577,7 @@
       tags: [create, action]
 
     - name: "ACTION | Idempotency check - create same action"
-      dsp.tructl.action:
+      virtru.dsp_tructl.action:
         name: "test-custom-action"
         state: present
       register: action_idempotent
@@ -594,7 +594,7 @@
     # MODULE 10: tructl_attribute_value - create individual values
     # =========================================================================
     - name: "ATTRIBUTE_VALUE | Create an individual attribute value"
-      dsp.tructl.attribute_value:
+      virtru.dsp_tructl.attribute_value:
         attribute_id: "{{ attr_create.attribute.id }}"
         value: "top-secret"
         state: present
@@ -612,7 +612,7 @@
     # MODULE 11: tructl_resource_mapping_group - CRUD
     # =========================================================================
     - name: "RESOURCE_MAPPING_GROUP | Create resource mapping group"
-      dsp.tructl.resource_mapping_group:
+      virtru.dsp_tructl.resource_mapping_group:
         namespace_id: "{{ test_namespace_id }}"
         name: "test-rmg"
         state: present
@@ -628,7 +628,7 @@
       tags: [create, resource_mapping_group]
 
     - name: "RESOURCE_MAPPING_GROUP | Idempotency check"
-      dsp.tructl.resource_mapping_group:
+      virtru.dsp_tructl.resource_mapping_group:
         namespace_id: "{{ test_namespace_id }}"
         name: "test-rmg"
         state: present
@@ -646,7 +646,7 @@
     # MODULE 12: tructl_subject_condition_set - create (not idempotent)
     # =========================================================================
     - name: "SUBJECT_CONDITION_SET | Create subject condition set"
-      dsp.tructl.subject_condition_set:
+      virtru.dsp_tructl.subject_condition_set:
         subject_sets:
           - condition_groups:
               - boolean_operator: 2
@@ -670,7 +670,7 @@
     # MODULE 13: tructl_obligation - CRUD by name
     # =========================================================================
     - name: "OBLIGATION | Create obligation"
-      dsp.tructl.obligation:
+      virtru.dsp_tructl.obligation:
         name: "test-obligation"
         namespace: "{{ test_namespace_id }}"
         values:
@@ -689,7 +689,7 @@
       tags: [create, obligation]
 
     - name: "OBLIGATION | Idempotency check"
-      dsp.tructl.obligation:
+      virtru.dsp_tructl.obligation:
         name: "test-obligation"
         namespace: "{{ test_namespace_id }}"
         values:
@@ -710,7 +710,7 @@
     # MODULE 14: tructl_registered_resource - CRUD by name
     # =========================================================================
     - name: "REGISTERED_RESOURCE | Create registered resource"
-      dsp.tructl.registered_resource:
+      virtru.dsp_tructl.registered_resource:
         name: "test-registered-resource"
         values:
           - "resource-value-1"
@@ -728,7 +728,7 @@
       tags: [create, registered_resource]
 
     - name: "REGISTERED_RESOURCE | Idempotency check"
-      dsp.tructl.registered_resource:
+      virtru.dsp_tructl.registered_resource:
         name: "test-registered-resource"
         values:
           - "resource-value-1"
@@ -748,7 +748,7 @@
     # MODULE 15: tructl_key_provider - CRUD by name
     # =========================================================================
     - name: "KEY_PROVIDER | Create key provider"
-      dsp.tructl.key_provider:
+      virtru.dsp_tructl.key_provider:
         name: "test-key-provider"
         manager: "local"
         config:
@@ -766,7 +766,7 @@
       tags: [create, key_provider]
 
     - name: "KEY_PROVIDER | Idempotency check"
-      dsp.tructl.key_provider:
+      virtru.dsp_tructl.key_provider:
         name: "test-key-provider"
         manager: "local"
         config:
@@ -789,7 +789,7 @@
     # module interface works without requiring an actual KAS key ID.
     # =========================================================================
     - name: "ATTRIBUTE_KEY | Assign KAS key to attribute (check mode - no KAS keys available)"
-      dsp.tructl.attribute_key:
+      virtru.dsp_tructl.attribute_key:
         attribute: "{{ attr_create.attribute.id }}"
         key_id: "00000000-0000-0000-0000-000000000000"
         state: present
@@ -805,7 +805,7 @@
       tags: [create, attribute_key]
 
     - name: "ATTRIBUTE_VALUE_KEY | Assign KAS key to attribute value (check mode - no KAS keys available)"
-      dsp.tructl.attribute_value_key:
+      virtru.dsp_tructl.attribute_value_key:
         value: "{{ test_attr_value_id }}"
         key_id: "00000000-0000-0000-0000-000000000000"
         state: present
@@ -821,7 +821,7 @@
       tags: [create, attribute_value_key]
 
     - name: "NAMESPACE_KEY | Assign KAS key to namespace (check mode - no KAS keys available)"
-      dsp.tructl.namespace_key:
+      virtru.dsp_tructl.namespace_key:
         namespace: "{{ test_namespace_id }}"
         key_id: "00000000-0000-0000-0000-000000000000"
         state: present
@@ -840,7 +840,7 @@
     # MODULE 19: tructl_policy_export - export policy
     # =========================================================================
     - name: "POLICY_EXPORT | Export policy to file"
-      dsp.tructl.policy_export:
+      virtru.dsp_tructl.policy_export:
         namespace: "{{ test_namespace }}"
         dest: "/tmp/tructl_test_export.yaml"
         no_bundle: true
@@ -859,7 +859,7 @@
     # MODULE 20: tructl_policy_import - import policy
     # =========================================================================
     - name: "POLICY_IMPORT | Import policy from exported file (expect fail - namespace already exists)"
-      dsp.tructl.policy_import:
+      virtru.dsp_tructl.policy_import:
         artifact: "/tmp/tructl_test_export.yaml"
         no_verify_signature: true
       register: policy_import_result
@@ -875,7 +875,7 @@
     # MODULE 21: tructl_provision - provision defaults (check mode)
     # =========================================================================
     - name: "PROVISION | Provision defaults (check mode - avoid polluting test namespace)"
-      dsp.tructl.provision:
+      virtru.dsp_tructl.provision:
         namespace: "{{ test_namespace }}"
         with_resource_mappings: true
         with_subject_mappings: true
@@ -891,12 +891,12 @@
       tags: [create, provision]
 
     # =========================================================================
-    # LOOKUP PLUGIN: dsp.tructl.subject_match - query entitlements
+    # LOOKUP PLUGIN: virtru.dsp_tructl.subject_match - query entitlements
     # =========================================================================
     - name: "SUBJECT_MATCH | Query entitlements via lookup plugin"
       vars:
         match_result: >-
-          {{ lookup('dsp.tructl.subject_match',
+          {{ lookup('virtru.dsp_tructl.subject_match',
           tructl_bin=tructl_bin, host=tructl_host,
           tls_no_verify=tructl_tls_no_verify, client_creds=tructl_client_creds) }}
       ansible.builtin.debug:
@@ -914,7 +914,7 @@
     # MODULE 22: tructl_encrypt - encrypt files
     # =========================================================================
     - name: "ENCRYPT | Encrypt file without attributes"
-      dsp.tructl.encrypt:
+      virtru.dsp_tructl.encrypt:
         src: "{{ test_plaintext_file }}"
         dest: "{{ test_tdf_file }}"
       register: encrypt_basic
@@ -929,7 +929,7 @@
       tags: [create, encrypt]
 
     - name: "ENCRYPT | Idempotency check - encrypt same file (should skip)"
-      dsp.tructl.encrypt:
+      virtru.dsp_tructl.encrypt:
         src: "{{ test_plaintext_file }}"
         dest: "{{ test_tdf_file }}"
       register: encrypt_idempotent
@@ -943,7 +943,7 @@
       tags: [create, encrypt]
 
     - name: "ENCRYPT | Force re-encryption"
-      dsp.tructl.encrypt:
+      virtru.dsp_tructl.encrypt:
         src: "{{ test_plaintext_file }}"
         dest: "{{ test_tdf_file }}"
         force: true
@@ -958,7 +958,7 @@
       tags: [create, encrypt]
 
     - name: "ENCRYPT | Encrypt with attributes"
-      dsp.tructl.encrypt:
+      virtru.dsp_tructl.encrypt:
         src: "{{ test_plaintext_file }}"
         dest: "/tmp/tructl_test_with_attrs.tdf"
         force: true
@@ -978,7 +978,7 @@
     # MODULE 10: tructl_inspect - read-only inspection
     # =========================================================================
     - name: "INSPECT | Inspect TDF file (basic)"
-      dsp.tructl.inspect:
+      virtru.dsp_tructl.inspect:
         src: "{{ test_tdf_file }}"
       register: inspect_basic
       tags: [create, inspect]
@@ -1004,7 +1004,7 @@
       tags: [create, inspect]
 
     - name: "INSPECT | Inspect TDF with attributes"
-      dsp.tructl.inspect:
+      virtru.dsp_tructl.inspect:
         src: "/tmp/tructl_test_with_attrs.tdf"
       register: inspect_attrs
       tags: [create, inspect]
@@ -1025,7 +1025,7 @@
     # MODULE 11: tructl_decrypt - decrypt files
     # =========================================================================
     - name: "DECRYPT | Decrypt TDF to specific path"
-      dsp.tructl.decrypt:
+      virtru.dsp_tructl.decrypt:
         src: "{{ test_tdf_file }}"
         dest: "{{ test_decrypted_file }}"
       register: decrypt_basic
@@ -1048,12 +1048,12 @@
     - name: "DECRYPT | Assert content matches"
       ansible.builtin.assert:
         that:
-          - "(decrypted_content.content | b64decode) == 'This is a test file for dsp.tructl collection testing.'"
+          - "(decrypted_content.content | b64decode) == 'This is a test file for virtru.dsp_tructl collection testing.'"
         fail_msg: "Decrypted content does not match original"
       tags: [create, decrypt]
 
     - name: "DECRYPT | Idempotency check - decrypt same file (should skip)"
-      dsp.tructl.decrypt:
+      virtru.dsp_tructl.decrypt:
         src: "{{ test_tdf_file }}"
         dest: "{{ test_decrypted_file }}"
       register: decrypt_idempotent
@@ -1067,7 +1067,7 @@
       tags: [create, decrypt]
 
     - name: "DECRYPT | Force re-decryption"
-      dsp.tructl.decrypt:
+      virtru.dsp_tructl.decrypt:
         src: "{{ test_tdf_file }}"
         dest: "{{ test_decrypted_file }}"
         force: true
@@ -1082,7 +1082,7 @@
       tags: [create, decrypt]
 
     - name: "DECRYPT | Decrypt without dest (use default naming)"
-      dsp.tructl.decrypt:
+      virtru.dsp_tructl.decrypt:
         src: "/tmp/tructl_test_with_attrs.tdf"
       register: decrypt_default_name
       ignore_errors: true
@@ -1106,7 +1106,7 @@
 
     # --- Clean up registered resources ---
     - name: "CLEANUP REGISTERED_RESOURCE | Delete registered resource"
-      dsp.tructl.registered_resource:
+      virtru.dsp_tructl.registered_resource:
         id: "{{ rr_create.registered_resource.id }}"
         state: absent
       register: rr_delete
@@ -1123,7 +1123,7 @@
 
     # --- Clean up key providers ---
     - name: "CLEANUP KEY_PROVIDER | Delete key provider"
-      dsp.tructl.key_provider:
+      virtru.dsp_tructl.key_provider:
         id: "{{ kp_create.key_provider.id }}"
         state: absent
       register: kp_delete
@@ -1140,7 +1140,7 @@
 
     # --- Clean up obligations ---
     - name: "CLEANUP OBLIGATION | Delete obligation"
-      dsp.tructl.obligation:
+      virtru.dsp_tructl.obligation:
         id: "{{ obligation_create.obligation.id }}"
         state: absent
       register: obligation_delete
@@ -1157,7 +1157,7 @@
 
     # --- Clean up subject condition sets ---
     - name: "CLEANUP SUBJECT_CONDITION_SET | Delete subject condition set"
-      dsp.tructl.subject_condition_set:
+      virtru.dsp_tructl.subject_condition_set:
         id: "{{ scs_create.subject_condition_set.id }}"
         state: absent
       register: scs_delete
@@ -1174,7 +1174,7 @@
 
     # --- Clean up resource mapping groups ---
     - name: "CLEANUP RESOURCE_MAPPING_GROUP | Delete resource mapping group"
-      dsp.tructl.resource_mapping_group:
+      virtru.dsp_tructl.resource_mapping_group:
         id: "{{ rmg_create.resource_mapping_group.id }}"
         state: absent
       register: rmg_delete
@@ -1195,7 +1195,7 @@
 
     # --- Clean up actions ---
     - name: "CLEANUP ACTION | Delete action"
-      dsp.tructl.action:
+      virtru.dsp_tructl.action:
         id: "{{ action_create.action.id }}"
         state: absent
       register: action_delete
@@ -1212,7 +1212,7 @@
 
     # --- Clean up resource mappings ---
     - name: "CLEANUP RESOURCE_MAPPING | Delete resource mapping (single term)"
-      dsp.tructl.resource_mapping:
+      virtru.dsp_tructl.resource_mapping:
         id: "{{ rm_create.resource_mapping.id }}"
         state: absent
       register: rm_delete
@@ -1228,14 +1228,14 @@
       tags: [cleanup, resource_mapping]
 
     - name: "CLEANUP RESOURCE_MAPPING | Delete resource mapping (multi-term)"
-      dsp.tructl.resource_mapping:
+      virtru.dsp_tructl.resource_mapping:
         id: "{{ rm_create_multi.resource_mapping.id }}"
         state: absent
       when: rm_create_multi is not skipped and rm_create_multi.resource_mapping.id is defined
       tags: [cleanup, resource_mapping]
 
     - name: "CLEANUP RESOURCE_MAPPING | Idempotency - delete already deleted mapping"
-      dsp.tructl.resource_mapping:
+      virtru.dsp_tructl.resource_mapping:
         id: "{{ rm_create.resource_mapping.id }}"
         state: absent
       register: rm_delete_idempotent
@@ -1252,7 +1252,7 @@
 
     # --- Clean up subject mappings ---
     - name: "CLEANUP SUBJECT_MAPPING | Delete subject mapping"
-      dsp.tructl.subject_mapping:
+      virtru.dsp_tructl.subject_mapping:
         id: "{{ sm_create.subject_mapping.id }}"
         state: absent
       register: sm_delete
@@ -1268,7 +1268,7 @@
       tags: [cleanup, subject_mapping]
 
     - name: "CLEANUP SUBJECT_MAPPING | Idempotency - delete already deleted"
-      dsp.tructl.subject_mapping:
+      virtru.dsp_tructl.subject_mapping:
         id: "{{ sm_create.subject_mapping.id }}"
         state: absent
       register: sm_delete_idempotent
@@ -1285,7 +1285,7 @@
 
     # --- Clean up KAS registry ---
     - name: "CLEANUP KAS_REGISTRY | Delete KAS registry entry"
-      dsp.tructl.kas_registry:
+      virtru.dsp_tructl.kas_registry:
         id: "{{ kas_create.kas_registry.id }}"
         state: absent
       register: kas_delete
@@ -1301,7 +1301,7 @@
       tags: [cleanup, kas_registry]
 
     - name: "CLEANUP KAS_REGISTRY | Idempotency - delete already deleted"
-      dsp.tructl.kas_registry:
+      virtru.dsp_tructl.kas_registry:
         id: "{{ kas_create.kas_registry.id }}"
         state: absent
       register: kas_delete_idempotent
@@ -1318,7 +1318,7 @@
 
     # --- Clean up attributes ---
     - name: "CLEANUP ATTRIBUTE | Deactivate sensitivity attribute"
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: "{{ test_namespace_id }}"
         name: "{{ test_attr_name }}"
         state: absent
@@ -1333,7 +1333,7 @@
       tags: [cleanup, attribute]
 
     - name: "CLEANUP ATTRIBUTE | Deactivate department attribute"
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: "{{ test_namespace_id }}"
         name: "department"
         state: absent
@@ -1341,7 +1341,7 @@
       tags: [cleanup, attribute]
 
     - name: "CLEANUP ATTRIBUTE | Deactivate clearance attribute"
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: "{{ test_namespace_id }}"
         name: "clearance"
         state: absent
@@ -1349,7 +1349,7 @@
       tags: [cleanup, attribute]
 
     - name: "CLEANUP ATTRIBUTE | Idempotency - deactivate already inactive"
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: "{{ test_namespace_id }}"
         name: "{{ test_attr_name }}"
         state: absent
@@ -1365,7 +1365,7 @@
 
     # --- Clean up namespaces ---
     - name: "CLEANUP NAMESPACE | Deactivate test namespace"
-      dsp.tructl.namespace:
+      virtru.dsp_tructl.namespace:
         name: "{{ test_namespace }}"
         state: absent
       register: ns_deactivate
@@ -1379,7 +1379,7 @@
       tags: [cleanup, namespace]
 
     - name: "CLEANUP NAMESPACE | Idempotency - deactivate already inactive"
-      dsp.tructl.namespace:
+      virtru.dsp_tructl.namespace:
         name: "{{ test_namespace }}"
         state: absent
       register: ns_deactivate_idempotent
@@ -1413,7 +1413,7 @@
       ansible.builtin.debug:
         msg: |
           ============================================
-          dsp.tructl Collection Test Summary
+          virtru.dsp_tructl Collection Test Summary
           ============================================
           Modules tested:
             1. tructl_profile    (check mode - requires D-Bus keyring)

@@ -20,23 +20,23 @@ Authenticate to DSP platform via tructl.
 
 - Always set `no_log=true` when using `client_secret` to prevent credential exposure in logs.
 - This module requires `tructl` to be installed on the Ansible controller.
-- A profile should be configured with `dsp.tructl.profile` before authenticating.
+- A profile should be configured with `virtru.dsp_tructl.profile` before authenticating.
 
 ## Examples
 
 ```yaml
 - name: Authenticate with a public client
-  dsp.tructl.auth:
+  virtru.dsp_tructl.auth:
     client_id: cli-client
 
 - name: Authenticate with a confidential client
-  dsp.tructl.auth:
+  virtru.dsp_tructl.auth:
     client_id: my-service
     client_secret: "{{ vault_client_secret }}"
   no_log: true
 
 - name: Authenticate using a custom tructl binary path
-  dsp.tructl.auth:
+  virtru.dsp_tructl.auth:
     client_id: cli-client
     tructl_bin: /usr/local/bin/tructl
 ```

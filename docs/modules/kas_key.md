@@ -21,7 +21,7 @@ Manage KAS registry keys.
 
 ## Notes
 
-- A KAS registry entry must exist before importing keys. Use `dsp.tructl.kas_registry` first.
+- A KAS registry entry must exist before importing keys. Use `virtru.dsp_tructl.kas_registry` first.
 - Key import operations are not naturally idempotent. Running the same import twice may result in duplicate keys.
 - This module requires `tructl` to be installed on the Ansible controller.
 
@@ -29,7 +29,7 @@ Manage KAS registry keys.
 
 ```yaml
 - name: Import an RSA key into a KAS registry entry
-  dsp.tructl.kas_key:
+  virtru.dsp_tructl.kas_key:
     kas_id: "550e8400-e29b-41d4-a716-446655440000"
     action: import
     key_file: /path/to/public-key.pem
@@ -37,7 +37,7 @@ Manage KAS registry keys.
     algorithm: rsa-2048
 
 - name: Set the base key for a KAS registry entry
-  dsp.tructl.kas_key:
+  virtru.dsp_tructl.kas_key:
     kas_id: "550e8400-e29b-41d4-a716-446655440000"
     action: base_set
     key_id: "key-789-abc-012"

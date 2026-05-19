@@ -26,19 +26,19 @@ Manage tructl CLI profiles.
 
 ```yaml
 - name: Create and set default profile
-  dsp.tructl.profile:
+  virtru.dsp_tructl.profile:
     name: dsp-lab
     endpoint: "https://platform.dsp.lab"
     default: true
 
 - name: List all profiles
-  dsp.tructl.profile:
+  virtru.dsp_tructl.profile:
     name: unused
     state: list
   register: profiles
 
 - name: Remove a profile
-  dsp.tructl.profile:
+  virtru.dsp_tructl.profile:
     name: old-profile
     state: absent
 ```

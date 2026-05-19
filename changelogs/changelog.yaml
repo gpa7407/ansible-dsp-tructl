@@ -2,7 +2,7 @@ ancestor: null
 releases:
   1.0.0:
     changes:
-      release_summary: Initial release of the ``dsp.tructl`` collection.
+      release_summary: Initial release of the ``virtru.dsp_tructl`` collection.
       major_changes:
         - "auth - New module for authenticating to the DSP platform via ``tructl auth login``."
         - "profile - New module for managing tructl CLI profiles."

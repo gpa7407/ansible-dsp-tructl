@@ -53,21 +53,21 @@ notes:
 - This module requires C(tructl) to be installed on the Ansible controller.
 - Check mode is supported for all states.
 seealso:
-- module: dsp.tructl.kas_registry
-- module: dsp.tructl.kas_key
+- module: virtru.dsp_tructl.kas_registry
+- module: virtru.dsp_tructl.kas_key
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create a key provider
-  dsp.tructl.key_provider:
+  virtru.dsp_tructl.key_provider:
     name: primary-hsm
     manager: local
     state: present
 
 - name: Create a key provider with config
-  dsp.tructl.key_provider:
+  virtru.dsp_tructl.key_provider:
     name: cloud-kms
     manager: aws-kms
     config:
@@ -76,12 +76,12 @@ EXAMPLES = r"""
     state: present
 
 - name: List all key providers
-  dsp.tructl.key_provider:
+  virtru.dsp_tructl.key_provider:
     state: list
   register: kp_result
 
 - name: Delete a key provider by ID
-  dsp.tructl.key_provider:
+  virtru.dsp_tructl.key_provider:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 """
@@ -102,7 +102,7 @@ key_providers:
 import json
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

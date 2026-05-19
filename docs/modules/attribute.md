@@ -29,7 +29,7 @@ Manage DSP policy attributes.
 
 ```yaml
 - name: Create a classification attribute with hierarchy rule
-  dsp.tructl.attribute:
+  virtru.dsp_tructl.attribute:
     namespace: "https://example.com/attr"
     name: classification
     rule: hierarchy
@@ -41,7 +41,7 @@ Manage DSP policy attributes.
     state: present
 
 - name: Create a department attribute with anyOf rule
-  dsp.tructl.attribute:
+  virtru.dsp_tructl.attribute:
     namespace: "https://example.com/attr"
     name: department
     rule: anyOf
@@ -52,13 +52,13 @@ Manage DSP policy attributes.
     state: present
 
 - name: Deactivate an attribute
-  dsp.tructl.attribute:
+  virtru.dsp_tructl.attribute:
     namespace: "https://example.com/attr"
     name: classification
     state: absent
 
 - name: List all attributes
-  dsp.tructl.attribute:
+  virtru.dsp_tructl.attribute:
     namespace: unused
     name: unused
     state: list

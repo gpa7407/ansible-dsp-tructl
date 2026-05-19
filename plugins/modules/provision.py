@@ -58,26 +58,26 @@ options:
     type: dict
 notes:
 - This module always reports C(changed=true) because provisioning is not idempotent.
-- Authentication must be configured via O(client_creds) or a prior M(dsp.tructl.auth) call.
+- Authentication must be configured via O(client_creds) or a prior M(virtru.dsp_tructl.auth) call.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.policy_export
-- module: dsp.tructl.policy_import
-- module: dsp.tructl.auth
+- module: virtru.dsp_tructl.policy_export
+- module: virtru.dsp_tructl.policy_import
+- module: virtru.dsp_tructl.auth
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Provision demo namespace with defaults
-  dsp.tructl.provision:
+  virtru.dsp_tructl.provision:
     host: https://platform.dsp.vm
     client_creds:
       clientId: opentdf
       clientSecret: secret
 
 - name: Provision a custom namespace
-  dsp.tructl.provision:
+  virtru.dsp_tructl.provision:
     namespace: acme.com
     host: https://platform.dsp.vm
     client_creds:
@@ -85,7 +85,7 @@ EXAMPLES = r"""
       clientSecret: secret
 
 - name: Provision from a custom configuration file
-  dsp.tructl.provision:
+  virtru.dsp_tructl.provision:
     file: /opt/dsp/policy-config.yaml
     host: https://platform.dsp.vm
     client_creds:
@@ -93,7 +93,7 @@ EXAMPLES = r"""
       clientSecret: secret
 
 - name: Provision without resource or subject mappings
-  dsp.tructl.provision:
+  virtru.dsp_tructl.provision:
     namespace: demo.com
     with_resource_mappings: false
     with_subject_mappings: false
@@ -114,7 +114,7 @@ stdout:
 import os
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

@@ -53,19 +53,19 @@ options:
     type: str
     default: tructl
 notes:
-- A KAS registry entry must exist before importing keys. Use M(dsp.tructl.kas_registry) first.
+- A KAS registry entry must exist before importing keys. Use M(virtru.dsp_tructl.kas_registry) first.
 - Key import operations are not naturally idempotent. Running the same import twice may result in duplicate keys.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.kas_registry
-- module: dsp.tructl.kas_grant
+- module: virtru.dsp_tructl.kas_registry
+- module: virtru.dsp_tructl.kas_grant
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Import an RSA key into a KAS registry entry
-  dsp.tructl.kas_key:
+  virtru.dsp_tructl.kas_key:
     kas_id: "550e8400-e29b-41d4-a716-446655440000"
     action: import
     key_file: /path/to/public-key.pem
@@ -73,7 +73,7 @@ EXAMPLES = r"""
     algorithm: rsa-2048
 
 - name: Set the base key for a KAS registry entry
-  dsp.tructl.kas_key:
+  virtru.dsp_tructl.kas_key:
     kas_id: "550e8400-e29b-41d4-a716-446655440000"
     action: base_set
     key_id: "key-789-abc-012"
@@ -93,7 +93,7 @@ msg:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, common_argument_spec
 
 
 def main():

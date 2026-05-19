@@ -63,15 +63,15 @@ notes:
 - The module passes O(actions) and O(subject_condition_sets) as JSON to the tructl CLI.
 - This module requires C(tructl) to be installed on the Ansible controller.
 seealso:
-- module: dsp.tructl.attribute
-- module: dsp.tructl.resource_mapping
+- module: virtru.dsp_tructl.attribute
+- module: virtru.dsp_tructl.resource_mapping
 author:
 - Virtru DSP Team
 """
 
 EXAMPLES = r"""
 - name: Create a subject mapping granting DECRYPT to admins
-  dsp.tructl.subject_mapping:
+  virtru.dsp_tructl.subject_mapping:
     attribute_value_id: "abc-123-def-456"
     actions:
       - standard: DECRYPT
@@ -86,12 +86,12 @@ EXAMPLES = r"""
     state: present
 
 - name: List all subject mappings
-  dsp.tructl.subject_mapping:
+  virtru.dsp_tructl.subject_mapping:
     state: list
   register: sm_result
 
 - name: Delete a subject mapping by ID
-  dsp.tructl.subject_mapping:
+  virtru.dsp_tructl.subject_mapping:
     id: "550e8400-e29b-41d4-a716-446655440000"
     state: absent
 """
@@ -112,7 +112,7 @@ subject_mappings:
 import json
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.dsp.tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
+from ansible_collections.virtru.dsp_tructl.plugins.module_utils.tructl_common import TructlRunner, state_argument_spec
 
 
 def main():

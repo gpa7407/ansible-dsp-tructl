@@ -19,7 +19,7 @@ Decrypt TDF files using tructl.
 
 ## Notes
 
-- Authentication must be performed with `dsp.tructl.auth` before decrypting files.
+- Authentication must be performed with `virtru.dsp_tructl.auth` before decrypting files.
 - The authenticated user must have the required attributes to satisfy the TDF's access policy.
 - This module requires `tructl` to be installed on the Ansible controller.
 
@@ -27,16 +27,16 @@ Decrypt TDF files using tructl.
 
 ```yaml
 - name: Decrypt a TDF file to a specific path
-  dsp.tructl.decrypt:
+  virtru.dsp_tructl.decrypt:
     src: /data/report.pdf.tdf
     dest: /data/report.pdf
 
 - name: Decrypt with default output name
-  dsp.tructl.decrypt:
+  virtru.dsp_tructl.decrypt:
     src: /data/notes.txt.tdf
 
 - name: Force re-decryption of an existing file
-  dsp.tructl.decrypt:
+  virtru.dsp_tructl.decrypt:
     src: /data/report.pdf.tdf
     dest: /data/report.pdf
     force: true

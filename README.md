@@ -1,6 +1,6 @@
-# Ansible Collection: dsp.tructl
+# Ansible Collection: virtru.dsp_tructl
 
-The `dsp.tructl` collection includes modules for managing the Virtru Data Security Platform (DSP) via the `tructl` CLI. It provides idempotent automation for policy management, authentication, encryption, and KAS configuration.
+The `virtru.dsp_tructl` collection includes modules for managing the Virtru Data Security Platform (DSP) via the `tructl` CLI. It provides idempotent automation for policy management, authentication, encryption, and KAS configuration.
 
 ## Ansible version compatibility
 
@@ -36,7 +36,7 @@ See [CHANGELOG.rst](CHANGELOG.rst) for the release history and changes made to t
 Each module includes full Ansible documentation accessible via `ansible-doc`:
 
 ```
-ansible-doc dsp.tructl.encrypt
+ansible-doc virtru.dsp_tructl.encrypt
 ```
 
 ## Installation and Usage
@@ -52,14 +52,14 @@ ansible-doc dsp.tructl.encrypt
 Install from Ansible Galaxy:
 
 ```bash
-ansible-galaxy collection install dsp.tructl
+ansible-galaxy collection install virtru.dsp_tructl
 ```
 
 Or include it in a `requirements.yml` file:
 
 ```yaml
 collections:
-  - name: dsp.tructl
+  - name: virtru.dsp_tructl
 ```
 
 Then install with:
@@ -85,28 +85,28 @@ ansible-galaxy collection install git+https://github.com/gpa7407/ansible-dsp-tru
 
   tasks:
     - name: Setup profile
-      dsp.tructl.profile:
+      virtru.dsp_tructl.profile:
         name: dsp-lab
         endpoint: "https://platform.dsp.lab"
         default: true
 
     - name: Authenticate
-      dsp.tructl.auth:
+      virtru.dsp_tructl.auth:
         client_id: cli-client
 
     - name: Create namespace
-      dsp.tructl.namespace:
+      virtru.dsp_tructl.namespace:
         name: "https://example.com/attr"
 
     - name: Create attribute
-      dsp.tructl.attribute:
+      virtru.dsp_tructl.attribute:
         namespace: "https://example.com/attr"
         name: classification
         rule: hierarchy
         values: [public, internal, confidential, secret]
 
     - name: Register KAS
-      dsp.tructl.kas_registry:
+      virtru.dsp_tructl.kas_registry:
         name: primary-kas
         uri: "https://platform.dsp.lab/kas"
 ```
@@ -128,7 +128,7 @@ The collection can be validated with:
 python3 -m py_compile plugins/modules/*.py
 
 # View module documentation
-ansible-doc -t module dsp.tructl.encrypt
+ansible-doc -t module virtru.dsp_tructl.encrypt
 
 # Dry run a playbook
 ansible-playbook tests/test_all_modules.yml --check
