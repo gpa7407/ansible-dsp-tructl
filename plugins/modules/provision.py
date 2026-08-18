@@ -67,7 +67,7 @@ seealso:
 - module: virtru.dsp_tructl.policy_import
 - module: virtru.dsp_tructl.auth
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

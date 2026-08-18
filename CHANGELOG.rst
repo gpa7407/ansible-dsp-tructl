@@ -28,6 +28,7 @@ Deprecated Features
 Bugfixes
 --------
 
+- Module documentation now renders on Ansible Galaxy / Automation Hub - document the shared connection options (host, tls_no_verify, client_creds) via a doc fragment, fix the author format, and correct the attribute 'rule' choices to match the argument spec.
 - attribute - Fix attribute creation on DSP 2.0.7, which rejected the namespace name with "namespace_id - must be a valid UUID".
 
 v1.0.0

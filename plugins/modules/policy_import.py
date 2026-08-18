@@ -55,7 +55,7 @@ seealso:
 - module: virtru.dsp_tructl.provision
 - module: virtru.dsp_tructl.auth
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

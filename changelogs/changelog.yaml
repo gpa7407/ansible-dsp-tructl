@@ -22,6 +22,9 @@ releases:
       bugfixes:
       - attribute - Fix attribute creation on DSP 2.0.7, which rejected the namespace name with "namespace_id
         - must be a valid UUID".
+      - Module documentation now renders on Ansible Galaxy / Automation Hub - document the shared connection
+        options (host, tls_no_verify, client_creds) via a doc fragment, fix the author format, and correct
+        the attribute 'rule' choices to match the argument spec.
       deprecated_features:
       - provision - Not supported on DSP 2.0.7+, where ``tructl provision`` is a deprecated no-op; compose
         the individual policy modules instead.

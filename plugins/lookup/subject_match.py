@@ -9,7 +9,7 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 name: subject_match
-author: Virtru DSP Team
+author: Virtru (@virtru)
 version_added: "1.0.0"
 short_description: Look up subject mapping matches via tructl
 description:

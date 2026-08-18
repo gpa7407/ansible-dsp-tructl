@@ -54,8 +54,10 @@ notes:
 seealso:
 - module: virtru.dsp_tructl.attribute
 - module: virtru.dsp_tructl.namespace
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

@@ -52,8 +52,10 @@ notes:
 seealso:
 - module: virtru.dsp_tructl.kas_key
 - module: virtru.dsp_tructl.kas_grant
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

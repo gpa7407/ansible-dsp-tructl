@@ -30,7 +30,7 @@ options:
   rule:
     description:
       - The attribute rule type that governs how attribute values are evaluated during access decisions.
-    choices: [anyOf, allOf, hierarchy]
+    choices: [ANY_OF, ALL_OF, HIERARCHY]
     type: str
   values:
     description:
@@ -57,8 +57,10 @@ notes:
 seealso:
   - module: virtru.dsp_tructl.namespace
   - module: virtru.dsp_tructl.subject_mapping
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-  - Virtru DSP Team
+  - Virtru (@virtru)
 """
 
 EXAMPLES = r"""
@@ -66,7 +68,7 @@ EXAMPLES = r"""
   virtru.dsp_tructl.attribute:
     namespace: "https://example.com/attr"
     name: classification
-    rule: hierarchy
+    rule: HIERARCHY
     values:
       - public
       - internal
@@ -78,7 +80,7 @@ EXAMPLES = r"""
   virtru.dsp_tructl.attribute:
     namespace: "https://example.com/attr"
     name: department
-    rule: anyOf
+    rule: ANY_OF
     values:
       - engineering
       - finance
@@ -107,7 +109,7 @@ attribute:
   sample:
     id: "b4e3c2a1-5678-4def-9abc-1234567890ab"
     name: "classification"
-    rule: "hierarchy"
+    rule: "HIERARCHY"
     namespace:
       id: "a1b2c3d4-5678-4def-9abc-abcdef123456"
       name: "https://example.com/attr"
@@ -124,7 +126,7 @@ attributes:
   sample:
     - id: "b4e3c2a1-5678-4def-9abc-1234567890ab"
       name: "classification"
-      rule: "hierarchy"
+      rule: "HIERARCHY"
       namespace:
         id: "a1b2c3d4-5678-4def-9abc-abcdef123456"
         name: "https://example.com/attr"
@@ -134,7 +136,7 @@ attributes:
       active: true
     - id: "c5f6d7e8-9012-4abc-def0-abcdef654321"
       name: "department"
-      rule: "anyOf"
+      rule: "ANY_OF"
       namespace:
         id: "a1b2c3d4-5678-4def-9abc-abcdef123456"
         name: "https://example.com/attr"
