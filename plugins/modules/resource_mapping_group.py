@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: resource_mapping_group
 short_description: Manage DSP policy resource mapping groups
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Creates, deletes, or lists resource mapping groups in the DSP platform.
 - Resource mapping groups organize resource mappings under a namespace for logical grouping.
@@ -51,8 +51,10 @@ notes:
 seealso:
 - module: virtru.dsp_tructl.resource_mapping
 - module: virtru.dsp_tructl.namespace
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

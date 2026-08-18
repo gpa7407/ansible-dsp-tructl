@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: policy_import
 short_description: Import a policy bundle using tructl
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Imports a policy bundle into the platform using C(tructl import).
 - The bundle is typically produced by M(virtru.dsp_tructl.policy_export).
@@ -55,7 +55,7 @@ seealso:
 - module: virtru.dsp_tructl.provision
 - module: virtru.dsp_tructl.auth
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

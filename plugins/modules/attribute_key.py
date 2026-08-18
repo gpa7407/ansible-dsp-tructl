@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: attribute_key
 short_description: Assign or remove KAS keys on policy attributes
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Assigns or removes a KAS key on a policy attribute definition.
 - Uses C(tructl policy attributes key assign) and C(tructl policy attributes key remove).
@@ -45,8 +45,10 @@ notes:
 seealso:
 - module: virtru.dsp_tructl.attribute
 - module: virtru.dsp_tructl.kas_key
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

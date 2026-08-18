@@ -40,8 +40,10 @@ notes:
 - A profile should be configured with M(virtru.dsp_tructl.profile) before authenticating.
 seealso:
 - module: virtru.dsp_tructl.profile
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

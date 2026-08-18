@@ -11,12 +11,14 @@ DOCUMENTATION = r"""
 ---
 module: provision
 short_description: Provision policy configuration using tructl
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Provisions policy configuration on the platform using C(tructl provision policy).
 - This is typically used to seed a new environment with default namespaces, attributes,
   subject mappings, resource mappings, and obligations.
 - This module always reports C(changed=true) because provisioning is not idempotent.
+- 'B(Not supported on DSP 2.0.7+): the underlying C(tructl provision) command was
+  deprecated and is a no-op there. Compose the individual policy modules instead.'
 options:
   namespace:
     description:
@@ -65,7 +67,7 @@ seealso:
 - module: virtru.dsp_tructl.policy_import
 - module: virtru.dsp_tructl.auth
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

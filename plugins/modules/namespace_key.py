@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: namespace_key
 short_description: Assign or remove KAS keys on policy namespaces
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Assigns or removes a KAS key on a policy attribute namespace.
 - Uses C(tructl policy attributes namespaces key assign) and C(tructl policy attributes namespaces key remove).
@@ -45,8 +45,10 @@ notes:
 seealso:
 - module: virtru.dsp_tructl.namespace
 - module: virtru.dsp_tructl.kas_key
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""
@@ -105,10 +107,13 @@ def main():
             'assign' if state == 'present' else 'remove', key_id, namespace)
         module.exit_json(**result)
 
+    # DSP 2.0.7 requires the namespace reference as a UUID.
+    namespace_id = runner.resolve_namespace_id(namespace)
+
     if state == 'present':
         args = [
             'policy', 'attributes', 'namespaces', 'key', 'assign',
-            '--namespace', namespace,
+            '--namespace', namespace_id,
             '--key-id', key_id,
             '--json',
         ]
@@ -120,7 +125,7 @@ def main():
     elif state == 'absent':
         args = [
             'policy', 'attributes', 'namespaces', 'key', 'remove',
-            '--namespace', namespace,
+            '--namespace', namespace_id,
             '--key-id', key_id,
         ]
         runner.run_command(args)

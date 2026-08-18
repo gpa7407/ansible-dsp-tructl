@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: attribute_value
 short_description: Manage DSP policy attribute values
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Creates, deactivates, or lists attribute values in the DSP platform.
 - Attribute values are the individual choices within a policy attribute (e.g., C(public), C(secret)).
@@ -54,8 +54,10 @@ notes:
 seealso:
 - module: virtru.dsp_tructl.attribute
 - module: virtru.dsp_tructl.namespace
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

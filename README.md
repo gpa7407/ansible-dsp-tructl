@@ -10,6 +10,28 @@ Plugins and modules within a collection may be tested with only specific Ansible
 A collection may contain metadata that identifies these versions.
 PEP440 is the schema used to describe the versions of Ansible.
 
+## DSP version compatibility
+
+`tructl`'s CLI changes between DSP releases, so collection releases are pinned to
+the DSP versions they were tested against:
+
+| Collection version | Tested DSP versions |
+| ------------------ | ------------------- |
+| `1.0.0`            | 2.0.6.1 – 2.0.6.3   |
+| `1.1.0`            | 2.0.7               |
+
+Notes:
+
+- **2.0.7** changed several `tructl policy ... create` commands to require parent
+  references as **UUIDs** (e.g. a namespace ID rather than its name). As of
+  `1.1.0` the policy modules resolve a namespace name/FQN to its UUID
+  automatically, so playbooks can keep passing friendly names.
+- The `provision` module wraps `tructl provision`, which was **deprecated (no-op)
+  in DSP 2.0.7** — compose the individual policy modules instead.
+- `1.1.0` validation covered the core authoring chain (namespace, attribute,
+  attribute value, subject condition set, subject mapping) plus encrypt/decrypt
+  against a live 2.0.7 platform. Broader per-module testing is planned.
+
 ## Changelog
 
 See [CHANGELOG.rst](CHANGELOG.rst) for the release history and changes made to this collection.

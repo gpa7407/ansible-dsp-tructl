@@ -40,8 +40,10 @@ notes:
   - Check mode is supported for C(present) and C(absent) states.
 seealso:
   - module: virtru.dsp_tructl.attribute
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-  - Virtru DSP Team
+  - Virtru (@virtru)
 """
 
 EXAMPLES = r"""

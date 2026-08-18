@@ -10,6 +10,15 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import json
+import re
+
+_UUID_RE = re.compile(
+    r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', re.IGNORECASE)
+
+
+def is_uuid(value):
+    """Return True if value looks like a UUID."""
+    return bool(value) and bool(_UUID_RE.match(str(value)))
 
 
 def common_argument_spec():
@@ -105,6 +114,24 @@ class TructlRunner:
                     return result[key]
             return [result]
         return result if isinstance(result, list) else []
+
+    def resolve_namespace_id(self, namespace):
+        """Resolve a namespace to its UUID.
+
+        DSP 2.0.7's tructl requires namespace references as UUIDs where earlier
+        versions accepted the name/FQN. Accepts a UUID (returned as-is), a name
+        (e.g. C(example.com)), or an FQN (e.g. C(https://example.com)).
+        """
+        if is_uuid(namespace):
+            return namespace
+        namespaces = self.list_resources(['policy', 'attributes', 'namespaces'])
+        for ns in namespaces:
+            if namespace in (ns.get('name'), ns.get('fqn')):
+                return ns.get('id')
+        self.module.fail_json(
+            msg="Could not resolve namespace '{0}' to an ID".format(namespace),
+            available=[ns.get('name') or ns.get('fqn') for ns in namespaces],
+        )
 
     def find_by_field(self, items, field, value):
         """Find a resource in a list by matching a field value.

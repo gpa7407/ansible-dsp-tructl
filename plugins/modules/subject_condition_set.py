@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: subject_condition_set
 short_description: Manage DSP policy subject condition sets
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Creates, deletes, or lists subject condition sets in the DSP platform.
 - Subject condition sets define conditions based on IdP token claims that determine subject entitlements.
@@ -50,8 +50,10 @@ notes:
 - Check mode is supported for all states.
 seealso:
 - module: virtru.dsp_tructl.subject_mapping
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

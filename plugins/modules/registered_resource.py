@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: registered_resource
 short_description: Manage DSP policy registered resources
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Creates, deletes, or lists registered resources in the DSP platform.
 - Registered resources represent data assets that are protected by DSP policy.
@@ -50,8 +50,10 @@ notes:
 - Check mode is supported for all states.
 seealso:
 - module: virtru.dsp_tructl.resource_mapping
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-- Virtru DSP Team
+- Virtru (@virtru)
 """
 
 EXAMPLES = r"""

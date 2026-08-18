@@ -50,8 +50,10 @@ notes:
 seealso:
   - module: virtru.dsp_tructl.auth
   - module: virtru.dsp_tructl.encrypt
+extends_documentation_fragment:
+- virtru.dsp_tructl.tructl
 author:
-  - Virtru DSP Team
+  - Virtru (@virtru)
 """
 
 EXAMPLES = r"""

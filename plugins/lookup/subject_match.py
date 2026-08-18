@@ -9,8 +9,8 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 name: subject_match
-author: Virtru DSP Team
-version_added: "1.1.0"
+author: Virtru (@virtru)
+version_added: "1.0.0"
 short_description: Look up subject mapping matches via tructl
 description:
 - Runs C(tructl policy subject-mappings match) to resolve which subject mappings apply
