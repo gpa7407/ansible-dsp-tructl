@@ -20,11 +20,11 @@ releases:
   1.1.0:
     changes:
       bugfixes:
-      - attribute - Fix attribute creation on DSP 2.0.7, which rejected the namespace name with "namespace_id
-        - must be a valid UUID".
       - Module documentation now renders on Ansible Galaxy / Automation Hub - document the shared connection
         options (host, tls_no_verify, client_creds) via a doc fragment, fix the author format, and correct
         the attribute 'rule' choices to match the argument spec.
+      - attribute - Fix attribute creation on DSP 2.0.7, which rejected the namespace name with "namespace_id
+        - must be a valid UUID".
       deprecated_features:
       - provision - Not supported on DSP 2.0.7+, where ``tructl provision`` is a deprecated no-op; compose
         the individual policy modules instead.
@@ -42,4 +42,20 @@ releases:
         '
     fragments:
     - 1.1.0-dsp-207.yml
+    release_date: '2026-08-18'
+  1.1.1:
+    changes:
+      minor_changes:
+      - Remove non-permitted sanity ignore entries for the intentional C(state=list) choice.
+      - Require ansible-core >=2.15 (2.14 is end-of-life and was flagged as unsupported by the Galaxy
+        importer).
+      release_summary: 'Maintenance release. Forces a fresh documentation render on Ansible Galaxy /
+
+        Automation Hub (some module doc pages from earlier imports showed a parse
+
+        error) and addresses collection-metadata warnings from the Galaxy importer.
+
+        '
+    fragments:
+    - 1.1.1.yml
     release_date: '2026-08-18'
