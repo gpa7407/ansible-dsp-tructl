@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: resource_mapping_group
 short_description: Manage DSP policy resource mapping groups
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Creates, deletes, or lists resource mapping groups in the DSP platform.
 - Resource mapping groups organize resource mappings under a namespace for logical grouping.

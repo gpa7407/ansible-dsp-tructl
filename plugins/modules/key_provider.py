@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: key_provider
 short_description: Manage DSP key management providers
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Creates, deletes, or lists key management providers in the DSP platform.
 - Key providers configure external key management systems (e.g., HSMs, cloud KMS) used by the KAS.

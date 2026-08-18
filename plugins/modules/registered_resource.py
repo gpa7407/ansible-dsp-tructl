@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: registered_resource
 short_description: Manage DSP policy registered resources
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Creates, deletes, or lists registered resources in the DSP platform.
 - Registered resources represent data assets that are protected by DSP policy.

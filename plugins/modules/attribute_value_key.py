@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: attribute_value_key
 short_description: Assign or remove KAS keys on policy attribute values
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Assigns or removes a KAS key on a policy attribute value.
 - Uses C(tructl policy attributes values key assign) and C(tructl policy attributes values key remove).

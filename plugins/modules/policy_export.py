@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: policy_export
 short_description: Export policy configuration using tructl
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Exports policy configuration from the platform to a local file using C(tructl export).
 - The exported bundle can later be imported into another environment with M(virtru.dsp_tructl.policy_import).

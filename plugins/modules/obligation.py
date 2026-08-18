@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: obligation
 short_description: Manage DSP policy obligations
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Creates, deletes, or lists policy obligations in the DSP platform.
 - Obligations define additional requirements that must be met when accessing protected data.
@@ -156,8 +156,10 @@ def main():
             result['changed'] = True
             module.exit_json(**result)
 
+        # DSP 2.0.7 requires the namespace reference as a UUID.
+        namespace_id = runner.resolve_namespace_id(module.params['namespace'])
         args = ['policy', 'obligations', 'create',
-                '--name', name, '--namespace', module.params['namespace']]
+                '--name', name, '--namespace', namespace_id]
         if module.params.get('values'):
             for val in module.params['values']:
                 args.extend(['--value', val])

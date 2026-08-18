@@ -198,9 +198,12 @@ def main():
             if module.check_mode:
                 result['changed'] = True
                 module.exit_json(**result)
+            # DSP 2.0.7's tructl requires the namespace as a UUID; resolve a
+            # name/FQN to its ID (a UUID is returned unchanged).
+            namespace_id = runner.resolve_namespace_id(namespace)
             args = [
                 'policy', 'attributes', 'create',
-                '--namespace', namespace,
+                '--namespace', namespace_id,
                 '--name', name,
                 '--rule', module.params['rule'],
             ]

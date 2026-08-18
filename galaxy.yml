@@ -1,6 +1,6 @@
 namespace: virtru
 name: dsp_tructl
-version: 1.0.0
+version: 1.1.0
 readme: README.md
 authors:
   - Greg Paladin <greg.paladin@virtru.com>
@@ -28,6 +28,8 @@ build_ignore:
   - .git
   - .gitignore
   - .github
+  - .ansible
+  - .ansible-lint
   - tests/integration/inventory*
   - changelogs/.plugin-cache.yaml
   - '*.tar.gz'

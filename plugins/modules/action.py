@@ -11,7 +11,7 @@ DOCUMENTATION = r"""
 ---
 module: action
 short_description: Manage DSP policy actions
-version_added: "1.1.0"
+version_added: "1.0.0"
 description:
 - Creates, deletes, or lists policy actions in the DSP platform.
 - Actions define the operations (e.g., DECRYPT, TRANSMIT) that can be granted via subject mappings.
