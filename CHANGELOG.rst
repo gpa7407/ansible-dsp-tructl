@@ -4,6 +4,22 @@ DSP Tructl Collection Release Notes
 
 .. contents:: Topics
 
+v1.1.1
+======
+
+Release Summary
+---------------
+
+Maintenance release. Forces a fresh documentation render on Ansible Galaxy /
+Automation Hub (some module doc pages from earlier imports showed a parse
+error) and addresses collection-metadata warnings from the Galaxy importer.
+
+Minor Changes
+-------------
+
+- Remove non-permitted sanity ignore entries for the intentional C(state=list) choice.
+- Require ansible-core >=2.15 (2.14 is end-of-life and was flagged as unsupported by the Galaxy importer).
+
 v1.1.0
 ======
 
