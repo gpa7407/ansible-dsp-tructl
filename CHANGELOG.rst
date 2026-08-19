@@ -4,6 +4,14 @@ DSP Tructl Collection Release Notes
 
 .. contents:: Topics
 
+v1.1.2
+======
+
+Minor Changes
+-------------
+
+- profile, auth - document that these modules use the OS keyring (freedesktop Secret Service / D-Bus), which is unavailable on a headless controller, and that automation should instead pass ``host`` + ``client_creds`` directly to the policy/encrypt/decrypt modules (client-credentials flow, no keyring).
+
 v1.1.1
 ======
 

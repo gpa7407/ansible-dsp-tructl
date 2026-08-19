@@ -38,6 +38,10 @@ notes:
 - Always set C(no_log=true) when using O(client_secret) to prevent credential exposure in logs.
 - This module requires C(tructl) to be installed on the Ansible controller.
 - A profile should be configured with M(virtru.dsp_tructl.profile) before authenticating.
+- This uses the tructl profile/keyring, which relies on the OS Secret Service
+  (D-Bus) and is typically unavailable on a headless controller. For automation,
+  skip this module and pass O(host) plus O(client_creds) directly to the policy,
+  encrypt, and decrypt modules (client-credentials flow, no keyring needed).
 seealso:
 - module: virtru.dsp_tructl.profile
 extends_documentation_fragment:

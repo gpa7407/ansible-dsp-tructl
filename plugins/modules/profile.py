@@ -47,6 +47,13 @@ options:
 notes:
   - This module requires the tructl CLI to be installed on the target host.
   - Check mode is supported.
+  - This module stores credentials in the operating-system keyring (the
+    freedesktop.org Secret Service / D-Bus), which is typically unavailable on a
+    headless Ansible controller and will fail with "org.freedesktop.secrets was
+    not provided by any .service files". For automation, skip the profile/auth
+    modules and pass O(host) plus O(client_creds) directly to the policy,
+    encrypt, and decrypt modules - the client-credentials flow needs no profile
+    or keyring.
 seealso:
   - module: virtru.dsp_tructl.auth
   - module: virtru.dsp_tructl.encrypt
